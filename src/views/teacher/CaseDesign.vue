@@ -5,20 +5,7 @@
         <h1 class="page-title">案例教学设计</h1>
         <p class="page-desc">基于真实工程案例，设计沉浸式教学方案，提升学生实践能力和工程思维</p>
       </div>
-      <div class="header-stats">
-        <div class="stat-item">
-          <span class="stat-value">86</span>
-          <span class="stat-label">案例库</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">23</span>
-          <span class="stat-label">教学方案</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">5</span>
-          <span class="stat-label">最新案例</span>
-        </div>
-      </div>
+
     </div>
 
     <div class="page-body">

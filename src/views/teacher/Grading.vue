@@ -5,20 +5,7 @@
         <h1 class="page-title">作业批改助手</h1>
         <p class="page-desc">AI辅助批改农业水利专业作业与实验报告，自动识别答案、评估成绩、生成评语</p>
       </div>
-      <div class="header-stats">
-        <div class="stat-item">
-          <span class="stat-value">324</span>
-          <span class="stat-label">已批改作业</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">85%</span>
-          <span class="stat-label">正确率</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">15</span>
-          <span class="stat-label">待批改</span>
-        </div>
-      </div>
+
     </div>
 
     <div class="page-body">

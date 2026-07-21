@@ -5,20 +5,7 @@
         <h1 class="page-title">智能备课助手</h1>
         <p class="page-desc">基于AI技术，为农业水利专业教师提供智能备课支持，包括课程设计、教案生成、教学资源推荐等功能</p>
       </div>
-      <div class="header-stats">
-        <div class="stat-item">
-          <span class="stat-value">128</span>
-          <span class="stat-label">已生成教案</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">96%</span>
-          <span class="stat-label">满意度</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">45</span>
-          <span class="stat-label">课程模板</span>
-        </div>
-      </div>
+
     </div>
 
     <div class="page-body">

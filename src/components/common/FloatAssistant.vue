@@ -71,7 +71,7 @@ const handleQuickAsk = () => {
 <style scoped>
 .float-assistant {
   position: fixed;
-  right: 30px;
+  left: 30px;
   bottom: 80px;
   z-index: 9999;
 }

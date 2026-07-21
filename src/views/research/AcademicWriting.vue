@@ -5,20 +5,7 @@
         <h1 class="page-title">学术写作助手</h1>
         <p class="page-desc">AI辅助农业水利学术论文撰写与图表说明，支持摘要、引言、结论等各部分写作</p>
       </div>
-      <div class="header-stats">
-        <div class="stat-item">
-          <span class="stat-value">1,234</span>
-          <span class="stat-label">已撰写论文</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">86%</span>
-          <span class="stat-label">录用率</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">15</span>
-          <span class="stat-label">写作模板</span>
-        </div>
-      </div>
+
     </div>
 
     <div class="page-body">

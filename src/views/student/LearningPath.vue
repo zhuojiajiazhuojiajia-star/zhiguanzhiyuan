@@ -5,20 +5,7 @@
         <h1 class="page-title">个性化学习路径规划</h1>
         <p class="page-desc">基于您的学习情况和目标，AI为您量身定制农业水利专业学习路径</p>
       </div>
-      <div class="header-stats">
-        <div class="stat-item">
-          <span class="stat-value">2,156</span>
-          <span class="stat-label">规划方案</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">89%</span>
-          <span class="stat-label">完成率</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">4.8</span>
-          <span class="stat-label">满意度</span>
-        </div>
-      </div>
+
     </div>
 
     <div class="page-body">

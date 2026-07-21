@@ -5,20 +5,7 @@
         <h1 class="page-title">计算题分步讲解</h1>
         <p class="page-desc">农业水利专业计算题详解，AI逐步讲解解题思路、公式应用和计算过程</p>
       </div>
-      <div class="header-stats">
-        <div class="stat-item">
-          <span class="stat-value">1,876</span>
-          <span class="stat-label">已讲解题目</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">95%</span>
-          <span class="stat-label">正确率</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">12</span>
-          <span class="stat-label">题型分类</span>
-        </div>
-      </div>
+
     </div>
 
     <div class="page-body">

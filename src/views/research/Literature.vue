@@ -5,20 +5,7 @@
         <h1 class="page-title">文献综述助手</h1>
         <p class="page-desc">AI辅助农业水利领域文献检索、阅读和综述撰写，提高科研效率</p>
       </div>
-      <div class="header-stats">
-        <div class="stat-item">
-          <span class="stat-value">12,580</span>
-          <span class="stat-label">文献库</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">356</span>
-          <span class="stat-label">已生成综述</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">92%</span>
-          <span class="stat-label">相关度</span>
-        </div>
-      </div>
+
     </div>
 
     <div class="page-body">

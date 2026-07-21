@@ -5,20 +5,7 @@
         <h1 class="page-title">灌区数据分析助手</h1>
         <p class="page-desc">AI辅助灌区数据处理、分析与可视化，支持灌溉用水、土壤墒情、作物生长等多维度数据分析</p>
       </div>
-      <div class="header-stats">
-        <div class="stat-item">
-          <span class="stat-value">50+</span>
-          <span class="stat-label">分析模型</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">100GB</span>
-          <span class="stat-label">数据量</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">28</span>
-          <span class="stat-label">服务灌区</span>
-        </div>
-      </div>
+
     </div>
 
     <div class="page-body">

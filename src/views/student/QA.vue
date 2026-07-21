@@ -5,20 +5,7 @@
         <h1 class="page-title">专业问答导师</h1>
         <p class="page-desc">农业水利专业知识问答，AI导师为您解答灌溉排水、水资源管理、水力学等专业问题</p>
       </div>
-      <div class="header-stats">
-        <div class="stat-item">
-          <span class="stat-value">5,234</span>
-          <span class="stat-label">已解答问题</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">98%</span>
-          <span class="stat-label">准确率</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">3min</span>
-          <span class="stat-label">平均响应</span>
-        </div>
-      </div>
+
     </div>
 
     <div class="page-body">
