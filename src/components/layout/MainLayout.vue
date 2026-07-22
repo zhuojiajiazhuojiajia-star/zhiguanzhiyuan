@@ -236,8 +236,10 @@ const submitFeedback = () => {
 }
 
 const handleLogout = () => {
-  localStorage.removeItem('sessionId')
+  localStorage.removeItem('token')
+  localStorage.removeItem('username')
   ElMessage.info('已退出登录')
+  router.push('/login')
 }
 
 onMounted(() => {
