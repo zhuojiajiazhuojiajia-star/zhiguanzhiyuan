@@ -1,0 +1,247 @@
+diff --git a/src/components/common/FloatAssistant.vue b/src/components/common/FloatAssistant.vue
+index 5e0bfff..57e0437 100644
+--- a/src/components/common/FloatAssistant.vue
++++ b/src/components/common/FloatAssistant.vue
+@@ -71,7 +71,7 @@ const handleQuickAsk = () => {
+ <style scoped>
+ .float-assistant {
+   position: fixed;
+-  right: 30px;
++  left: 30px;
+   bottom: 80px;
+   z-index: 9999;
+ }
+diff --git a/src/views/research/AcademicWriting.vue b/src/views/research/AcademicWriting.vue
+index 7ec08a6..30beed4 100644
+--- a/src/views/research/AcademicWriting.vue
++++ b/src/views/research/AcademicWriting.vue
+@@ -5,20 +5,7 @@
+         <h1 class="page-title">学术写作助手</h1>
+         <p class="page-desc">AI辅助农业水利学术论文撰写与图表说明，支持摘要、引言、结论等各部分写作</p>
+       </div>
+-      <div class="header-stats">
+-        <div class="stat-item">
+-          <span class="stat-value">1,234</span>
+-          <span class="stat-label">已撰写论文</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">86%</span>
+-          <span class="stat-label">录用率</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">15</span>
+-          <span class="stat-label">写作模板</span>
+-        </div>
+-      </div>
++
+     </div>
+ 
+     <div class="page-body">
+diff --git a/src/views/research/DataAnalysis.vue b/src/views/research/DataAnalysis.vue
+index 13e5fc2..a0f7afc 100644
+--- a/src/views/research/DataAnalysis.vue
++++ b/src/views/research/DataAnalysis.vue
+@@ -5,20 +5,7 @@
+         <h1 class="page-title">灌区数据分析助手</h1>
+         <p class="page-desc">AI辅助灌区数据处理、分析与可视化，支持灌溉用水、土壤墒情、作物生长等多维度数据分析</p>
+       </div>
+-      <div class="header-stats">
+-        <div class="stat-item">
+-          <span class="stat-value">50+</span>
+-          <span class="stat-label">分析模型</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">100GB</span>
+-          <span class="stat-label">数据量</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">28</span>
+-          <span class="stat-label">服务灌区</span>
+-        </div>
+-      </div>
++
+     </div>
+ 
+     <div class="page-body">
+diff --git a/src/views/research/Literature.vue b/src/views/research/Literature.vue
+index 0cc81bf..9a88894 100644
+--- a/src/views/research/Literature.vue
++++ b/src/views/research/Literature.vue
+@@ -5,20 +5,7 @@
+         <h1 class="page-title">文献综述助手</h1>
+         <p class="page-desc">AI辅助农业水利领域文献检索、阅读和综述撰写，提高科研效率</p>
+       </div>
+-      <div class="header-stats">
+-        <div class="stat-item">
+-          <span class="stat-value">12,580</span>
+-          <span class="stat-label">文献库</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">356</span>
+-          <span class="stat-label">已生成综述</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">92%</span>
+-          <span class="stat-label">相关度</span>
+-        </div>
+-      </div>
++
+     </div>
+ 
+     <div class="page-body">
+diff --git a/src/views/student/Calculation.vue b/src/views/student/Calculation.vue
+index efff0c2..8ab17a6 100644
+--- a/src/views/student/Calculation.vue
++++ b/src/views/student/Calculation.vue
+@@ -5,20 +5,7 @@
+         <h1 class="page-title">计算题分步讲解</h1>
+         <p class="page-desc">农业水利专业计算题详解，AI逐步讲解解题思路、公式应用和计算过程</p>
+       </div>
+-      <div class="header-stats">
+-        <div class="stat-item">
+-          <span class="stat-value">1,876</span>
+-          <span class="stat-label">已讲解题目</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">95%</span>
+-          <span class="stat-label">正确率</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">12</span>
+-          <span class="stat-label">题型分类</span>
+-        </div>
+-      </div>
++
+     </div>
+ 
+     <div class="page-body">
+diff --git a/src/views/student/LearningPath.vue b/src/views/student/LearningPath.vue
+index 45c81c9..ef00c5a 100644
+--- a/src/views/student/LearningPath.vue
++++ b/src/views/student/LearningPath.vue
+@@ -5,20 +5,7 @@
+         <h1 class="page-title">个性化学习路径规划</h1>
+         <p class="page-desc">基于您的学习情况和目标，AI为您量身定制农业水利专业学习路径</p>
+       </div>
+-      <div class="header-stats">
+-        <div class="stat-item">
+-          <span class="stat-value">2,156</span>
+-          <span class="stat-label">规划方案</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">89%</span>
+-          <span class="stat-label">完成率</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">4.8</span>
+-          <span class="stat-label">满意度</span>
+-        </div>
+-      </div>
++
+     </div>
+ 
+     <div class="page-body">
+diff --git a/src/views/student/QA.vue b/src/views/student/QA.vue
+index 6556e56..74c3516 100644
+--- a/src/views/student/QA.vue
++++ b/src/views/student/QA.vue
+@@ -5,20 +5,7 @@
+         <h1 class="page-title">专业问答导师</h1>
+         <p class="page-desc">农业水利专业知识问答，AI导师为您解答灌溉排水、水资源管理、水力学等专业问题</p>
+       </div>
+-      <div class="header-stats">
+-        <div class="stat-item">
+-          <span class="stat-value">5,234</span>
+-          <span class="stat-label">已解答问题</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">98%</span>
+-          <span class="stat-label">准确率</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">3min</span>
+-          <span class="stat-label">平均响应</span>
+-        </div>
+-      </div>
++
+     </div>
+ 
+     <div class="page-body">
+diff --git a/src/views/teacher/CaseDesign.vue b/src/views/teacher/CaseDesign.vue
+index ce2fac4..affb73d 100644
+--- a/src/views/teacher/CaseDesign.vue
++++ b/src/views/teacher/CaseDesign.vue
+@@ -5,20 +5,7 @@
+         <h1 class="page-title">案例教学设计</h1>
+         <p class="page-desc">基于真实工程案例，设计沉浸式教学方案，提升学生实践能力和工程思维</p>
+       </div>
+-      <div class="header-stats">
+-        <div class="stat-item">
+-          <span class="stat-value">86</span>
+-          <span class="stat-label">案例库</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">23</span>
+-          <span class="stat-label">教学方案</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">5</span>
+-          <span class="stat-label">最新案例</span>
+-        </div>
+-      </div>
++
+     </div>
+ 
+     <div class="page-body">
+diff --git a/src/views/teacher/Grading.vue b/src/views/teacher/Grading.vue
+index c59e924..e90dd4d 100644
+--- a/src/views/teacher/Grading.vue
++++ b/src/views/teacher/Grading.vue
+@@ -5,20 +5,7 @@
+         <h1 class="page-title">作业批改助手</h1>
+         <p class="page-desc">AI辅助批改农业水利专业作业与实验报告，自动识别答案、评估成绩、生成评语</p>
+       </div>
+-      <div class="header-stats">
+-        <div class="stat-item">
+-          <span class="stat-value">324</span>
+-          <span class="stat-label">已批改作业</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">85%</span>
+-          <span class="stat-label">正确率</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">15</span>
+-          <span class="stat-label">待批改</span>
+-        </div>
+-      </div>
++
+     </div>
+ 
+     <div class="page-body">
+diff --git a/src/views/teacher/Preparation.vue b/src/views/teacher/Preparation.vue
+index ba0801a..0b7dea5 100644
+--- a/src/views/teacher/Preparation.vue
++++ b/src/views/teacher/Preparation.vue
+@@ -5,20 +5,7 @@
+         <h1 class="page-title">智能备课助手</h1>
+         <p class="page-desc">基于AI技术，为农业水利专业教师提供智能备课支持，包括课程设计、教案生成、教学资源推荐等功能</p>
+       </div>
+-      <div class="header-stats">
+-        <div class="stat-item">
+-          <span class="stat-value">128</span>
+-          <span class="stat-label">已生成教案</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">96%</span>
+-          <span class="stat-label">满意度</span>
+-        </div>
+-        <div class="stat-item">
+-          <span class="stat-value">45</span>
+-          <span class="stat-label">课程模板</span>
+-        </div>
+-      </div>
++
+     </div>
+ 
+     <div class="page-body">
