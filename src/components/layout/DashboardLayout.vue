@@ -30,29 +30,31 @@
       </div>
     </header>
 
-    <aside class="dashboard-sidebar">
-      <div class="sidebar-scroll">
-        <el-menu
-          :default-active="activeMenu"
-          class="sidebar-menu"
-          router
-          background-color="transparent"
-          text-color="#94a3b8"
-          active-text-color="#38bdf8"
-        >
-          <template v-for="item in menuItems" :key="item.path">
-            <el-menu-item :index="item.path">
-              <el-icon><component :is="item.icon" /></el-icon>
-              <span>{{ item.label }}</span>
-            </el-menu-item>
-          </template>
-        </el-menu>
-      </div>
-    </aside>
+    <div class="dashboard-body">
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-scroll">
+          <el-menu
+            :default-active="activeMenu"
+            class="sidebar-menu"
+            router
+            background-color="transparent"
+            text-color="#94a3b8"
+            active-text-color="#38bdf8"
+          >
+            <template v-for="item in menuItems" :key="item.path">
+              <el-menu-item :index="item.path">
+                <el-icon><component :is="item.icon" /></el-icon>
+                <span>{{ item.label }}</span>
+              </el-menu-item>
+            </template>
+          </el-menu>
+        </div>
+      </aside>
 
-    <main class="dashboard-content">
-      <router-view />
-    </main>
+      <main class="dashboard-content">
+        <router-view />
+      </main>
+    </div>
   </div>
 </template>
 
@@ -120,6 +122,7 @@ onUnmounted(() => {
   justify-content: space-between;
   padding: 0 30px;
   height: 60px;
+  flex-shrink: 0;
   background: rgba(15, 23, 42, 0.9);
   border-bottom: 1px solid rgba(56, 189, 248, 0.1);
 }
@@ -207,14 +210,21 @@ onUnmounted(() => {
   border-radius: 20px;
 }
 
+.dashboard-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
 .dashboard-sidebar {
   width: 180px;
+  flex-shrink: 0;
   border-right: 1px solid rgba(56, 189, 248, 0.1);
   overflow: hidden;
 }
 
 .sidebar-scroll {
-  height: calc(100vh - 60px);
+  height: 100%;
   overflow-y: auto;
   padding: 20px 0;
 }
@@ -234,6 +244,7 @@ onUnmounted(() => {
 
 .sidebar-menu {
   border-right: none;
+  background-color: transparent !important;
 }
 
 .sidebar-menu :deep(.el-menu-item) {
@@ -255,7 +266,7 @@ onUnmounted(() => {
 
 .dashboard-content {
   flex: 1;
-  overflow: hidden;
+  overflow: auto;
   padding: 20px;
 }
 </style>
