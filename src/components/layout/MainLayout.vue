@@ -1,416 +1,367 @@
 <template>
   <div class="main-layout">
-    <header class="app-header">
-      <div class="header-left">
-        <div class="logo">
-          <span class="logo-icon">💧</span>
-          <span class="logo-text">智灌知源</span>
+    <aside class="sidebar" :class="{ 'is-open': mobileMenuOpen }">
+      <div class="brand-block">
+        <div class="brand-mark">
+          <el-icon><Pouring /></el-icon>
+        </div>
+        <div class="brand-copy">
+          <strong>智灌知源</strong>
+          <span>农业水利智能平台</span>
         </div>
       </div>
-      <div class="header-center">
-        <el-dropdown trigger="click" @command="handleTerminalChange">
-          <span class="terminal-selector">
-            {{ currentTerminalName }}
-            <el-icon class="el-icon--right"><ArrowDown /></el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="teacher">教师端</el-dropdown-item>
-              <el-dropdown-item command="student">学生端</el-dropdown-item>
-              <el-dropdown-item command="research">科研端</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-      <div class="header-right">
-        <el-button type="text" class="header-btn" @click="showSettings = true">
-          <el-icon><Setting /></el-icon>
-        </el-button>
-        <el-button type="text" class="header-btn" @click="showFeedback = true">
-          <el-icon><ChatRound /></el-icon>
-        </el-button>
-        <el-button type="text" class="header-btn logout-btn" @click="handleLogout">
-          <el-icon><SwitchButton /></el-icon>
-          <span>退出登录</span>
-        </el-button>
-      </div>
-    </header>
 
-    <div class="app-body">
-      <aside class="sidebar">
-        <el-menu
-          :default-active="activeMenu"
-          class="sidebar-menu"
-          router
-          @select="handleMenuSelect"
+      <div class="role-switch" aria-label="切换工作台">
+        <button
+          v-for="role in roles"
+          :key="role.value"
+          type="button"
+          :class="{ active: currentTerminal === role.value }"
+          @click="handleTerminalChange(role.value)"
         >
-          <template v-for="item in menuItems" :key="item.path">
-            <el-menu-item :index="item.path">
-              <el-icon><component :is="item.icon" /></el-icon>
-              <span>{{ item.label }}</span>
-            </el-menu-item>
-          </template>
-        </el-menu>
+          {{ role.shortLabel }}
+        </button>
+      </div>
 
-        <div class="sidebar-footer">
-          <el-button type="primary" plain class="new-chat-btn" @click="handleNewChat">
-            <el-icon><Plus /></el-icon>
-            新建会话
-          </el-button>
+      <div class="nav-caption">{{ currentTerminalName }}工具</div>
+      <el-menu :default-active="activeMenu" class="sidebar-menu" router @select="handleMenuSelect">
+        <el-menu-item v-for="item in menuItems" :key="item.path" :index="item.path">
+          <el-icon><component :is="item.icon" /></el-icon>
+          <span>{{ item.label }}</span>
+          <span v-if="item.badge" class="nav-badge">{{ item.badge }}</span>
+        </el-menu-item>
+      </el-menu>
+
+      <div class="sidebar-status">
+        <div class="status-heading">
+          <span>知识库状态</span>
+          <span class="online-dot">在线</span>
         </div>
-      </aside>
+        <div class="status-meta">
+          <span>专业文献已同步</span>
+          <strong>2,486</strong>
+        </div>
+        <div class="status-track"><span /></div>
+        <p>最近更新：今天 09:32</p>
+      </div>
+    </aside>
+
+    <button v-if="mobileMenuOpen" class="sidebar-backdrop" aria-label="关闭导航" @click="mobileMenuOpen = false" />
+
+    <section class="workspace">
+      <header class="app-header">
+        <div class="header-context">
+          <el-button class="mobile-menu-btn" text circle aria-label="打开导航" @click="mobileMenuOpen = !mobileMenuOpen">
+            <el-icon><Fold /></el-icon>
+          </el-button>
+          <div>
+            <span class="header-eyebrow">{{ currentTerminalName }}</span>
+            <strong>{{ currentPageName }}</strong>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="service-state">
+            <span class="pulse-dot" />
+            <div><span>AI 服务</span><strong>运行正常</strong></div>
+          </div>
+          <div class="date-time">
+            <span>{{ currentDate }}</span>
+            <strong>{{ currentTime }}</strong>
+          </div>
+          <el-tooltip content="通知中心" placement="bottom">
+            <el-button class="icon-button" text circle aria-label="通知中心">
+              <el-icon><Bell /></el-icon>
+              <span class="notice-dot" />
+            </el-button>
+          </el-tooltip>
+          <div class="user-chip">
+            <span class="avatar">林</span>
+            <div><strong>林老师</strong><span>水利工程系</span></div>
+            <el-icon><ArrowDown /></el-icon>
+          </div>
+        </div>
+      </header>
 
       <main class="main-content">
-        <transition name="fade" mode="out-in">
-          <router-view :key="$route.fullPath" />
-        </transition>
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" :key="$route.fullPath" />
+          </transition>
+        </router-view>
       </main>
-    </div>
-
-    <footer class="app-footer">
-      <span class="footer-text">© 2026 智灌知源 - 农业水利垂类大模型平台</span>
-      <div class="footer-actions">
-        <span class="version">v1.0.0</span>
-      </div>
-    </footer>
-
-    <FloatAssistant @open-tool="handleOpenTool" />
-
-    <el-dialog v-model="showSettings" title="设置" width="600px">
-      <div class="settings-content">
-        <el-form label-width="100px">
-          <el-form-item label="字体大小">
-            <el-select v-model="settings.fontSize" placeholder="请选择">
-              <el-option label="小号" value="small" />
-              <el-option label="默认" value="default" />
-              <el-option label="大号" value="large" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="主题模式">
-            <el-select v-model="settings.theme" placeholder="请选择">
-              <el-option label="深色模式" value="dark" />
-              <el-option label="浅色模式" value="light" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="自动保存">
-            <el-switch v-model="settings.autoSave" />
-          </el-form-item>
-        </el-form>
-      </div>
-      <template #footer>
-        <el-button @click="showSettings = false">取消</el-button>
-        <el-button type="primary" @click="saveSettings">保存设置</el-button>
-      </template>
-    </el-dialog>
-
-    <el-dialog v-model="showFeedback" title="意见反馈" width="600px">
-      <div class="feedback-content">
-        <el-form label-width="80px">
-          <el-form-item label="反馈类型">
-            <el-select v-model="feedback.type" placeholder="请选择">
-              <el-option label="功能建议" value="suggestion" />
-              <el-option label="Bug报告" value="bug" />
-              <el-option label="其他" value="other" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="反馈内容">
-            <el-textarea v-model="feedback.content" rows="6" placeholder="请输入您的反馈内容..." />
-          </el-form-item>
-        </el-form>
-      </div>
-      <template #footer>
-        <el-button @click="showFeedback = false">取消</el-button>
-        <el-button type="primary" @click="submitFeedback">提交反馈</el-button>
-      </template>
-    </el-dialog>
+    </section>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import {
   ArrowDown,
-  Setting,
-  ChatRound,
-  SwitchButton,
-  Plus,
-  Reading,
-  Document,
+  Bell,
   Briefcase,
-  HelpFilled,
   CirclePlus,
+  Document,
+  EditPen,
+  Fold,
+  HelpFilled,
   Medal,
-  Search,
   PieChart,
-  EditPen
+  Pouring,
+  Reading,
+  Search
 } from '@element-plus/icons-vue'
-import FloatAssistant from '../common/FloatAssistant.vue'
 
 const router = useRouter()
 const route = useRoute()
 
 const currentTerminal = ref('teacher')
-const showSettings = ref(false)
-const showFeedback = ref(false)
+const mobileMenuOpen = ref(false)
+const now = ref(new Date())
+let clockTimer
 
-const settings = ref({
-  fontSize: 'default',
-  theme: 'dark',
-  autoSave: true
-})
+const roles = [
+  { value: 'teacher', shortLabel: '教师', label: '教师工作台' },
+  { value: 'student', shortLabel: '学生', label: '学生工作台' },
+  { value: 'research', shortLabel: '科研', label: '科研工作台' }
+]
 
-const feedback = ref({
-  type: 'suggestion',
-  content: ''
-})
-
-const terminalNames = {
-  teacher: '教师端',
-  student: '学生端',
-  research: '科研端'
+const menus = {
+  teacher: [
+    { path: '/teacher/preparation', label: '智能备课', icon: Reading },
+    { path: '/teacher/grading', label: '作业批改', icon: Document, badge: '3' },
+    { path: '/teacher/case-design', label: '案例设计', icon: Briefcase }
+  ],
+  student: [
+    { path: '/student/qa', label: '专业问答', icon: HelpFilled },
+    { path: '/student/calculation', label: '计算讲解', icon: CirclePlus },
+    { path: '/student/learning-path', label: '学习路径', icon: Medal }
+  ],
+  research: [
+    { path: '/research/literature', label: '文献综述', icon: Search },
+    { path: '/research/data-analysis', label: '数据分析', icon: PieChart },
+    { path: '/research/academic-writing', label: '学术写作', icon: EditPen }
+  ]
 }
 
-const currentTerminalName = computed(() => terminalNames[currentTerminal.value])
-
-const menuItems = computed(() => {
-  const menus = {
-    teacher: [
-      { path: '/teacher/preparation', label: '智能备课助手', icon: Reading },
-      { path: '/teacher/grading', label: '作业批改助手', icon: Document },
-      { path: '/teacher/case-design', label: '案例教学设计', icon: Briefcase }
-    ],
-    student: [
-      { path: '/student/qa', label: '专业问答导师', icon: HelpFilled },
-      { path: '/student/calculation', label: '计算题讲解', icon: CirclePlus },
-      { path: '/student/learning-path', label: '学习路径规划', icon: Medal }
-    ],
-    research: [
-      { path: '/research/literature', label: '文献综述助手', icon: Search },
-      { path: '/research/data-analysis', label: '灌区数据分析', icon: PieChart },
-      { path: '/research/academic-writing', label: '学术写作助手', icon: EditPen }
-    ]
-  }
-  return menus[currentTerminal.value] || []
-})
-
+const currentTerminalName = computed(() => roles.find((role) => role.value === currentTerminal.value)?.label || '')
+const menuItems = computed(() => menus[currentTerminal.value] || [])
 const activeMenu = computed(() => route.path)
+const allMenuItems = computed(() => Object.values(menus).flat())
+const currentPageName = computed(() => allMenuItems.value.find((item) => item.path === route.path)?.label || '工作台')
+const currentDate = computed(() => now.value.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit', weekday: 'short' }))
+const currentTime = computed(() => now.value.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }))
+
+const syncTerminalWithRoute = () => {
+  if (route.path.startsWith('/student')) currentTerminal.value = 'student'
+  else if (route.path.startsWith('/research')) currentTerminal.value = 'research'
+  else currentTerminal.value = 'teacher'
+}
 
 const handleTerminalChange = (terminal) => {
+  if (terminal === currentTerminal.value) return
   currentTerminal.value = terminal
-  const firstMenu = menuItems.value[0]
-  if (firstMenu) {
-    router.push(firstMenu.path)
-  }
+  mobileMenuOpen.value = false
+  router.push(menus[terminal][0].path)
 }
 
-const handleMenuSelect = (index) => {
-  router.push(index)
-}
-
-const handleNewChat = () => {
-  const firstMenu = menuItems.value[0]
-  if (firstMenu) {
-    router.push(firstMenu.path)
-  }
-}
-
-const handleOpenTool = (tool) => {
-  console.log('Open tool:', tool)
-}
-
-const saveSettings = () => {
-  localStorage.setItem('appSettings', JSON.stringify(settings.value))
-  showSettings.value = false
-  ElMessage.success('设置已保存')
-}
-
-const submitFeedback = () => {
-  if (!feedback.value.content.trim()) {
-    ElMessage.warning('请输入反馈内容')
-    return
-  }
-  showFeedback.value = false
-  ElMessage.success('反馈已提交，感谢您的意见！')
-  feedback.value = { type: 'suggestion', content: '' }
-}
-
-const handleLogout = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('username')
-  ElMessage.info('已退出登录')
-  router.push('/login')
+const handleMenuSelect = () => {
+  mobileMenuOpen.value = false
 }
 
 onMounted(() => {
-  const path = route.path
-  if (path.startsWith('/teacher')) currentTerminal.value = 'teacher'
-  else if (path.startsWith('/student')) currentTerminal.value = 'student'
-  else if (path.startsWith('/research')) currentTerminal.value = 'research'
-
-  const savedSettings = localStorage.getItem('appSettings')
-  if (savedSettings) {
-    settings.value = JSON.parse(savedSettings)
-  }
+  syncTerminalWithRoute()
+  clockTimer = window.setInterval(() => { now.value = new Date() }, 30_000)
 })
+
+onBeforeUnmount(() => window.clearInterval(clockTimer))
 </script>
 
 <style scoped>
 .main-layout {
   display: flex;
-  flex-direction: column;
+  min-width: 0;
   height: 100%;
-  background-color: var(--bg-primary);
-}
-
-.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-  padding: 0 20px;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
-  flex-shrink: 0;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo-icon {
-  font-size: 28px;
-}
-
-.logo-text {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.header-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.terminal-selector {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background-color: var(--bg-tertiary);
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
-  font-size: var(--font-size-base);
-  cursor: pointer;
-  transition: background-color var(--transition-fast);
-}
-
-.terminal-selector:hover {
-  background-color: var(--bg-hover);
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.header-btn {
-  color: var(--text-secondary);
-  font-size: var(--font-size-lg);
-  padding: 6px 12px;
-  transition: color var(--transition-fast);
-}
-
-.header-btn:hover {
-  color: var(--text-primary);
-}
-
-.logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text-tertiary);
-}
-
-.logout-btn:hover {
-  color: var(--danger-color);
-}
-
-.app-body {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
+  background: var(--bg-primary);
 }
 
 .sidebar {
-  width: 240px;
-  background-color: var(--bg-secondary);
-  border-right: 1px solid var(--border-color);
+  position: relative;
+  z-index: 30;
   display: flex;
+  width: 244px;
+  flex: 0 0 244px;
   flex-direction: column;
-  flex-shrink: 0;
+  border-right: 1px solid var(--border-color);
+  background: var(--bg-sidebar);
 }
 
-.sidebar-menu {
-  flex: 1;
-  border-right: none;
-}
-
-.sidebar-footer {
-  padding: 16px;
-  border-top: 1px solid var(--border-color);
-}
-
-.new-chat-btn {
-  width: 100%;
-  color: var(--text-primary);
-  border-color: var(--primary-color);
-}
-
-.new-chat-btn:hover {
-  background-color: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-}
-
-.main-content {
-  flex: 1;
-  overflow: auto;
-  padding: 20px;
-}
-
-.app-footer {
+.brand-block {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 40px;
+  min-height: 76px;
   padding: 0 20px;
-  background-color: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-  flex-shrink: 0;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.footer-text {
-  font-size: var(--font-size-xs);
+.brand-mark {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  place-items: center;
+  border: 1px solid rgba(86, 196, 255, .45);
+  border-radius: 8px;
+  color: #8ee7ff;
+  background: linear-gradient(145deg, rgba(34, 119, 255, .24), rgba(29, 214, 181, .12));
+  box-shadow: inset 0 0 18px rgba(77, 193, 255, .12), 0 0 18px rgba(33, 125, 255, .1);
+  font-size: 22px;
+}
+
+.brand-copy { display: flex; min-width: 0; flex-direction: column; }
+.brand-copy strong { color: var(--text-primary); font-size: 18px; line-height: 1.3; }
+.brand-copy span { color: var(--text-muted); font-size: 11px; white-space: nowrap; }
+
+.role-switch {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 18px 16px 20px;
+  padding: 3px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: rgba(5, 16, 31, .7);
+}
+
+.role-switch button {
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
   color: var(--text-muted);
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
 }
 
-.version {
-  font-size: var(--font-size-xs);
+.role-switch button.active {
+  color: #f8fdff;
+  background: var(--primary-color);
+  box-shadow: 0 4px 14px rgba(29, 116, 255, .28);
+}
+
+.nav-caption {
+  padding: 0 20px 8px;
   color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
 }
 
-.settings-content,
-.feedback-content {
-  padding: 10px 0;
+.sidebar-menu { flex: 1; padding: 0 10px; border-right: 0 !important; }
+.sidebar-menu :deep(.el-menu-item) {
+  height: 46px;
+  margin-bottom: 5px;
+  padding: 0 12px !important;
+  border-radius: 6px;
+  gap: 10px;
+}
+.sidebar-menu :deep(.el-menu-item::before) {
+  position: absolute;
+  left: 0;
+  width: 3px;
+  height: 18px;
+  border-radius: 0 3px 3px 0;
+  background: #5bd8ff;
+  content: '';
+  opacity: 0;
+}
+.sidebar-menu :deep(.el-menu-item.is-active::before) { opacity: 1; }
+.sidebar-menu :deep(.el-menu-item.is-active) {
+  background: linear-gradient(90deg, rgba(28, 105, 226, .28), rgba(28, 105, 226, .08)) !important;
+  color: #eefdff !important;
+}
+.sidebar-menu :deep(.el-icon) { font-size: 18px; }
+.nav-badge {
+  min-width: 20px;
+  height: 20px;
+  margin-left: auto;
+  padding: 0 6px;
+  border-radius: 10px;
+  color: #ffdba7;
+  background: rgba(255, 167, 64, .16);
+  font-size: 11px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.sidebar-status {
+  margin: 12px 14px 16px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+  background: rgba(15, 36, 61, .62);
+}
+.status-heading, .status-meta { display: flex; align-items: center; justify-content: space-between; }
+.status-heading { color: var(--text-secondary); font-size: 12px; }
+.online-dot { color: #63e6bd; }
+.online-dot::before { display: inline-block; width: 6px; height: 6px; margin-right: 5px; border-radius: 50%; background: currentColor; content: ''; box-shadow: 0 0 8px currentColor; }
+.status-meta { margin-top: 13px; color: var(--text-muted); font-size: 11px; }
+.status-meta strong { color: var(--text-primary); font-size: 13px; }
+.status-track { height: 3px; margin: 8px 0 9px; overflow: hidden; border-radius: 2px; background: rgba(114, 151, 182, .18); }
+.status-track span { display: block; width: 84%; height: 100%; background: linear-gradient(90deg, #2c78ff, #39d6bd); }
+.sidebar-status p { color: var(--text-muted); font-size: 10px; }
+
+.workspace { display: flex; min-width: 0; flex: 1; flex-direction: column; }
+.app-header {
+  display: flex;
+  min-height: 76px;
+  flex: 0 0 76px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(9, 24, 43, .92);
+}
+.header-context { display: flex; align-items: center; gap: 10px; }
+.header-context > div:last-child { display: flex; flex-direction: column; }
+.header-context strong { color: var(--text-primary); font-size: 16px; line-height: 1.35; }
+.header-eyebrow { color: var(--text-muted); font-size: 11px; }
+.mobile-menu-btn { display: none; color: var(--text-secondary) !important; }
+.header-right { display: flex; align-items: center; gap: 22px; }
+.service-state { display: flex; align-items: center; gap: 9px; }
+.service-state > div, .date-time { display: flex; flex-direction: column; }
+.service-state span, .date-time span { color: var(--text-muted); font-size: 10px; }
+.service-state strong { color: #72e7c3; font-size: 11px; }
+.pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: #42d8ad; box-shadow: 0 0 0 4px rgba(66, 216, 173, .1), 0 0 10px rgba(66, 216, 173, .55); }
+.date-time { padding-left: 22px; border-left: 1px solid var(--border-color); }
+.date-time strong { color: var(--text-primary); font-size: 14px; line-height: 1.2; }
+.icon-button { position: relative; width: 36px; height: 36px; border: 1px solid var(--border-color) !important; color: var(--text-secondary) !important; background: var(--bg-tertiary) !important; }
+.notice-dot { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border: 1px solid var(--bg-tertiary); border-radius: 50%; background: #ff805d; }
+.user-chip { display: flex; align-items: center; gap: 9px; min-width: 142px; }
+.user-chip > div { display: flex; flex-direction: column; flex: 1; }
+.user-chip strong { color: var(--text-primary); font-size: 12px; }
+.user-chip span { color: var(--text-muted); font-size: 10px; }
+.avatar { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid rgba(84, 186, 255, .35); border-radius: 6px; color: #c9f4ff !important; background: #173f69; font-size: 13px !important; }
+.user-chip > .el-icon { color: var(--text-muted); font-size: 12px; }
+
+.main-content { min-height: 0; flex: 1; overflow: auto; padding: 18px; }
+.sidebar-backdrop { display: none; }
+
+@media (max-width: 980px) {
+  .sidebar { position: fixed; top: 0; bottom: 0; left: 0; transform: translateX(-100%); transition: transform .22s ease; }
+  .sidebar.is-open { transform: translateX(0); box-shadow: 12px 0 40px rgba(0, 0, 0, .38); }
+  .sidebar-backdrop { position: fixed; z-index: 20; inset: 0; display: block; border: 0; background: rgba(1, 7, 14, .64); }
+  .mobile-menu-btn { display: inline-flex; }
+  .service-state, .date-time { display: none; }
+}
+
+@media (max-width: 640px) {
+  .app-header { min-height: 64px; flex-basis: 64px; padding: 0 12px; }
+  .header-right { gap: 8px; }
+  .user-chip { min-width: auto; }
+  .user-chip > div, .user-chip > .el-icon { display: none; }
+  .main-content { padding: 12px; }
 }
 </style>

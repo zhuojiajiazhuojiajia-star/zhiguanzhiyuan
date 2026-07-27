@@ -2,71 +2,59 @@
   <div class="chat-panel">
     <div class="chat-header">
       <div class="chat-title">
-        <el-icon><component :is="headerIcon" /></el-icon>
-        <span>{{ title }}</span>
+        <span class="assistant-mark"><el-icon><component :is="headerIcon || MagicStick" /></el-icon></span>
+        <div><strong>{{ title }}</strong><span><i />已读取当前任务上下文</span></div>
       </div>
       <div class="chat-actions">
-        <el-button type="text" @click="handleClear">
-          <el-icon><Delete /></el-icon>
-        </el-button>
-        <el-button type="text" @click="handleExport">
-          <el-icon><Download /></el-icon>
-        </el-button>
+        <el-tooltip content="清空对话" placement="bottom">
+          <el-button text circle aria-label="清空对话" @click="handleClear"><el-icon><Delete /></el-icon></el-button>
+        </el-tooltip>
+        <el-tooltip content="导出记录" placement="bottom">
+          <el-button text circle aria-label="导出记录" @click="handleExport"><el-icon><Download /></el-icon></el-button>
+        </el-tooltip>
       </div>
     </div>
 
-    <div class="chat-history" ref="chatHistoryRef">
+    <div ref="chatHistoryRef" class="chat-history">
       <div v-if="messages.length === 0" class="empty-state">
-        <div class="empty-icon">{{ emptyIcon }}</div>
+        <div class="empty-visual">
+          <span class="visual-core"><el-icon><MagicStick /></el-icon></span>
+          <i class="orbit-one" /><i class="orbit-two" />
+        </div>
         <p class="empty-title">{{ emptyTitle }}</p>
         <p class="empty-desc">{{ emptyDesc }}</p>
         <div class="empty-examples">
-          <el-button
-            v-for="example in examples"
-            :key="example"
-            type="primary"
-            plain
-            size="small"
-            @click="handleExampleClick(example)"
-          >
-            {{ example }}
-          </el-button>
+          <button v-for="(example, index) in examples" :key="example" type="button" @click="handleExampleClick(example)">
+            <span>{{ String(index + 1).padStart(2, '0') }}</span>
+            <strong>{{ example }}</strong>
+            <el-icon><ArrowRight /></el-icon>
+          </button>
         </div>
       </div>
 
       <div v-else class="message-list">
-        <div
-          v-for="(msg, index) in messages"
-          :key="index"
-          class="message-item"
-          :class="{ 'is-user': msg.role === 'user', 'is-ai': msg.role === 'ai' }"
-        >
+        <div v-for="(msg, index) in messages" :key="index" class="message-item" :class="`is-${msg.role}`">
           <div class="message-avatar">
-            <span v-if="msg.role === 'user'">👤</span>
-            <span v-else>🤖</span>
+            <el-icon><component :is="msg.role === 'user' ? User : MagicStick" /></el-icon>
           </div>
           <div class="message-content">
+            <div class="message-label">{{ msg.role === 'user' ? '我' : '智灌 AI' }}</div>
             <div class="message-bubble">
               <div v-if="msg.role === 'user'" class="user-text">{{ msg.content }}</div>
-              <div v-else class="ai-content markdown-content" v-html="renderMarkdown(msg.content)"></div>
+              <div v-else class="ai-content markdown-content" v-html="renderMarkdown(msg.content)" />
             </div>
             <div class="message-time">{{ msg.time }}</div>
           </div>
         </div>
 
         <div v-if="isLoading" class="loading-state">
-          <div class="loading-dots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
-          <span class="loading-text">正在生成回答...</span>
+          <span class="loading-mark"><el-icon><MagicStick /></el-icon></span>
+          <div><strong>正在组织内容</strong><span class="loading-dots"><i /><i /><i /></span></div>
         </div>
 
         <div v-if="errorMessage" class="error-state">
-          <el-icon class="error-icon"><Warning /></el-icon>
-          <span>{{ errorMessage }}</span>
-          <el-button type="text" size="small" @click="handleRetry">重试</el-button>
+          <el-icon><Warning /></el-icon><span>{{ errorMessage }}</span>
+          <el-button text size="small" @click="handleRetry">重试</el-button>
         </div>
       </div>
     </div>
@@ -76,27 +64,16 @@
         v-model="inputMessage"
         type="textarea"
         :rows="2"
-        placeholder="请输入您的问题..."
+        placeholder="描述要调整的内容，Ctrl + Enter 发送"
         class="chat-input"
-        @keyup.enter.ctrl="handleSend"
         :disabled="isLoading"
+        @keyup.enter.ctrl="handleSend"
       />
-      <div class="input-actions">
-        <el-button type="text" class="action-btn">
-          <el-icon><Paperclip /></el-icon>
-        </el-button>
-        <el-button type="text" class="action-btn">
-          <el-icon><User /></el-icon>
-        </el-button>
-        <el-button
-          type="primary"
-          :loading="isLoading"
-          class="send-btn"
-          @click="handleSend"
-          :disabled="!inputMessage.trim() || isLoading"
-        >
-          <el-icon><Right /></el-icon>
+      <div class="input-footer">
+        <span>内容将同步到当前方案</span>
+        <el-button type="primary" :loading="isLoading" class="send-btn" :disabled="!inputMessage.trim() || isLoading" @click="handleSend">
           发送
+          <el-icon><Right /></el-icon>
         </el-button>
       </div>
     </div>
@@ -104,426 +81,130 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue'
-import { Delete, Download, Right, Paperclip, User, Warning } from '@element-plus/icons-vue'
+import { nextTick, ref, watch } from 'vue'
+import { ArrowRight, Delete, Download, MagicStick, Right, User, Warning } from '@element-plus/icons-vue'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
 import { chatApi } from '@/utils/api'
 
 const props = defineProps({
-  title: {
-    type: String,
-    default: 'AI助手'
-  },
-  headerIcon: {
-    type: Object,
-    default: () => Send
-  },
-  emptyIcon: {
-    type: String,
-    default: '🤖'
-  },
-  emptyTitle: {
-    type: String,
-    default: '欢迎使用AI助手'
-  },
-  emptyDesc: {
-    type: String,
-    default: '请输入您的问题，我将为您提供专业的解答。'
-  },
-  examples: {
-    type: Array,
-    default: () => []
-  },
-  mockResponse: {
-    type: Function,
-    default: null
-  },
-  terminal: {
-    type: String,
-    default: 'teacher'
-  },
-  module: {
-    type: String,
-    default: ''
-  },
-  useApi: {
-    type: Boolean,
-    default: false
-  }
+  title: { type: String, default: 'AI 助手' },
+  headerIcon: { type: Object, default: null },
+  emptyIcon: { type: String, default: '' },
+  emptyTitle: { type: String, default: '开始协作' },
+  emptyDesc: { type: String, default: '输入需求，我会基于当前任务提供专业建议。' },
+  examples: { type: Array, default: () => [] },
+  mockResponse: { type: Function, default: null },
+  terminal: { type: String, default: 'teacher' },
+  module: { type: String, default: '' },
+  useApi: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['send', 'clear'])
-
 const inputMessage = ref('')
 const messages = ref([])
 const isLoading = ref(false)
 const errorMessage = ref('')
 const chatHistoryRef = ref(null)
+const failedQuestion = ref('')
 
 marked.setOptions({
   gfm: true,
   breaks: true,
-  highlight: function (code, lang) {
+  highlight(code, lang) {
     if (lang && hljs.getLanguage(lang)) {
-      try {
-        return hljs.highlight(code, { language: lang }).value
-      } catch (e) {
-        console.error(e)
-      }
+      try { return hljs.highlight(code, { language: lang }).value } catch (error) { console.error(error) }
     }
     return hljs.highlightAuto(code).value
   }
 })
 
-const renderMarkdown = (content) => {
-  return marked(content)
-}
-
+const renderMarkdown = (content) => marked(content)
 const scrollToBottom = async () => {
   await nextTick()
-  if (chatHistoryRef.value) {
-    chatHistoryRef.value.scrollTop = chatHistoryRef.value.scrollHeight
-  }
+  if (chatHistoryRef.value) chatHistoryRef.value.scrollTop = chatHistoryRef.value.scrollHeight
 }
-
 watch(messages, scrollToBottom, { deep: true })
 
-const handleSend = async () => {
-  if (!inputMessage.value.trim() || isLoading.value) return
+const simulateAIResponse = () => new Promise((resolve) => {
+  window.setTimeout(() => resolve('我已结合当前任务完成分析。\n\n1. 明确本节课的核心概念与应用边界。\n2. 通过工程案例连接理论和参数计算。\n3. 增加一项可量化的课堂评价任务。\n\n你可以继续指定要修改的环节。'), 900)
+})
 
-  const userMessage = {
-    role: 'user',
-    content: inputMessage.value.trim(),
-    time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
-  }
+const handleSend = async (retryQuestion = '') => {
+  const question = typeof retryQuestion === 'string' && retryQuestion ? retryQuestion : inputMessage.value.trim()
+  if (!question || isLoading.value) return
 
-  messages.value.push(userMessage)
+  const userMessage = { role: 'user', content: question, time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }) }
+  if (!retryQuestion) messages.value.push(userMessage)
   inputMessage.value = ''
   errorMessage.value = ''
+  failedQuestion.value = ''
   isLoading.value = true
-
   emit('send', userMessage)
 
   try {
-    let responseContent = ''
-    
+    let responseContent
     if (props.useApi) {
-      const response = await chatApi.sendMessage(
-        userMessage.content,
-        props.terminal,
-        props.module
-      )
-      responseContent = response.content || await simulateAIResponse(userMessage.content)
+      const response = await chatApi.sendMessage(question, props.terminal, props.module)
+      responseContent = response.content || await simulateAIResponse()
     } else if (props.mockResponse) {
-      responseContent = props.mockResponse(userMessage.content)
-    } else {
-      responseContent = await simulateAIResponse(userMessage.content)
-    }
+      await new Promise((resolve) => window.setTimeout(resolve, 650))
+      responseContent = props.mockResponse(question)
+    } else responseContent = await simulateAIResponse()
 
-    const aiMessage = {
-      role: 'ai',
-      content: responseContent,
-      time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
-    }
-
-    messages.value.push(aiMessage)
+    messages.value.push({ role: 'ai', content: responseContent, time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }) })
   } catch (error) {
-    errorMessage.value = '网络异常，请稍后重试'
+    failedQuestion.value = question
+    errorMessage.value = '服务暂时不可用，请稍后重试'
     console.error('AI response error:', error)
   } finally {
     isLoading.value = false
   }
 }
 
-const simulateAIResponse = (question) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const responses = [
-        '感谢您的提问！关于这个问题，我将从以下几个方面为您解答：\n\n**一、基本概念**\n\n农业水利工程是研究农田水利、灌溉排水、水资源利用与管理等方面的工程技术学科。\n\n**二、核心原理**\n\n1. 灌溉原理：根据作物需水量和土壤水分状况，合理分配灌溉水量\n2. 排水原理：排除多余水分，防止土壤盐碱化和渍涝\n\n**三、应用实例**\n\n以节水灌溉为例，通过滴灌、喷灌等技术，可以有效提高水资源利用率。\n\n如需更详细的解答，请提供更多具体信息。',
-        '这是一个很好的问题！让我为您详细分析：\n\n```\nQ = K * A * (H1 - H2) / L\n```\n\n**公式说明：**\n- Q：渗流量\n- K：渗透系数\n- A：过水断面面积\n- H1-H2：水头差\n- L：渗流路径长度\n\n**计算步骤：**\n1. 确定各参数取值\n2. 代入公式计算\n3. 校核结果合理性\n\n**注意事项：**\n- 单位要统一\n- 考虑边界条件\n- 参考相关规范',
-        '针对您的需求，我为您制定了以下学习路径：\n\n## 第一阶段：基础学习（2-3周）\n- 课程：水力学基础、工程力学\n- 目标：掌握基本概念和原理\n\n## 第二阶段：专业深入（4-6周）\n- 课程：灌溉排水工程、水资源规划\n- 目标：理解专业核心知识\n\n## 第三阶段：实践应用（持续进行）\n- 实验：渠道设计、泵站选型\n- 目标：提升动手能力\n\n建议按照此路径循序渐进，如有疑问随时提问！'
-      ]
-      resolve(responses[Math.floor(Math.random() * responses.length)])
-    }, 2000 + Math.random() * 2000)
-  })
-}
-
-const handleExampleClick = (example) => {
-  inputMessage.value = example
-}
-
-const handleClear = () => {
-  messages.value = []
-  errorMessage.value = ''
-  emit('clear')
-}
-
+const handleExampleClick = (example) => { inputMessage.value = example }
+const handleClear = () => { messages.value = []; errorMessage.value = ''; emit('clear') }
 const handleExport = () => {
-  const content = messages.value.map(msg => `${msg.role === 'user' ? '用户' : 'AI'}: ${msg.content}`).join('\n\n')
-  const blob = new Blob([content], { type: 'text/markdown' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `chat-${Date.now()}.md`
-  a.click()
+  if (!messages.value.length) { ElMessage.info('当前没有可导出的对话'); return }
+  const content = messages.value.map((msg) => `${msg.role === 'user' ? '用户' : 'AI'}: ${msg.content}`).join('\n\n')
+  const url = URL.createObjectURL(new Blob([content], { type: 'text/markdown' }))
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `chat-${Date.now()}.md`
+  link.click()
   URL.revokeObjectURL(url)
 }
-
-const handleRetry = () => {
-  if (messages.value.length > 0) {
-    const lastUserMsg = messages.value[messages.value.length - 1]
-    if (lastUserMsg.role === 'user') {
-      errorMessage.value = ''
-      handleSend()
-    }
-  }
-}
+const handleRetry = () => handleSend(failedQuestion.value)
 </script>
 
 <style scoped>
-.chat-panel {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  background-color: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-}
-
-.chat-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
-  flex-shrink: 0;
-}
-
-.chat-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.chat-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.chat-actions :deep(.el-button) {
-  color: var(--text-tertiary);
-}
-
-.chat-actions :deep(.el-button:hover) {
-  color: var(--text-primary);
-}
-
-.chat-history {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.empty-icon {
-  font-size: 64px;
-  margin-bottom: 20px;
-}
-
-.empty-title {
-  font-size: var(--font-size-xl);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 10px;
-}
-
-.empty-desc {
-  font-size: var(--font-size-base);
-  color: var(--text-tertiary);
-  margin-bottom: 30px;
-}
-
-.empty-examples {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.empty-examples :deep(.el-button) {
-  background-color: var(--bg-tertiary);
-  border-color: var(--border-color);
-  color: var(--text-secondary);
-}
-
-.empty-examples :deep(.el-button:hover) {
-  background-color: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-  color: white !important;
-}
-
-.message-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.message-item {
-  display: flex;
-  gap: 12px;
-}
-
-.message-item.is-user {
-  flex-direction: row-reverse;
-}
-
-.message-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--bg-tertiary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
-.message-content {
-  max-width: 70%;
-}
-
-.message-item.is-user .message-content {
-  text-align: right;
-}
-
-.message-bubble {
-  padding: 12px 16px;
-  border-radius: var(--radius-lg);
-  word-break: break-word;
-}
-
-.message-item.is-user .message-bubble {
-  background-color: var(--primary-color);
-  border-top-right-radius: 4px;
-}
-
-.message-item.is-ai .message-bubble {
-  background-color: var(--bg-tertiary);
-  border-top-left-radius: 4px;
-}
-
-.user-text {
-  color: white;
-}
-
-.message-time {
-  font-size: var(--font-size-xs);
-  color: var(--text-muted);
-  margin-top: 6px;
-}
-
-.loading-state {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background-color: var(--bg-tertiary);
-  border-radius: var(--radius-lg);
-  border-top-left-radius: 4px;
-  width: fit-content;
-}
-
-.loading-dots {
-  display: flex;
-  gap: 6px;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--secondary-color);
-  animation: loading 1.4s infinite ease-in-out both;
-}
-
-.dot:nth-child(1) { animation-delay: -0.32s; }
-.dot:nth-child(2) { animation-delay: -0.16s; }
-
-@keyframes loading {
-  0%, 80%, 100% { transform: scale(0); }
-  40% { transform: scale(1); }
-}
-
-.loading-text {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-}
-
-.error-state {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background-color: rgba(244, 67, 54, 0.1);
-  border: 1px solid rgba(244, 67, 54, 0.3);
-  border-radius: var(--radius-md);
-  color: var(--danger-color);
-  font-size: var(--font-size-sm);
-}
-
-.error-icon {
-  font-size: var(--font-size-lg);
-}
-
-.chat-input-area {
-  padding: 16px 20px;
-  background-color: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-  flex-shrink: 0;
-}
-
-.chat-input {
-  margin-bottom: 12px;
-}
-
-.input-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-.action-btn {
-  color: var(--text-tertiary);
-  padding: 6px 12px;
-}
-
-.action-btn:hover {
-  color: var(--text-primary);
-}
-
-.send-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.markdown-content {
-  color: var(--text-secondary);
-}
+.chat-panel { display: flex; height: 100%; min-height: 0; flex-direction: column; overflow: hidden; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-card); }
+.chat-header { display: flex; min-height: 58px; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--border-color); background: rgba(14, 36, 59, .78); }
+.chat-title { display: flex; align-items: center; gap: 9px; }
+.assistant-mark { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid rgba(73, 173, 255, .25); border-radius: 5px; color: #69c9ff; background: rgba(32, 117, 198, .14); }
+.chat-title > div { display: flex; flex-direction: column; }
+.chat-title strong { color: var(--text-primary); font-size: 11px; }
+.chat-title span { display: flex; align-items: center; color: var(--text-muted); font-size: 8px; }
+.chat-title i { width: 5px; height: 5px; margin-right: 5px; border-radius: 50%; background: #47d6ae; box-shadow: 0 0 6px currentColor; }
+.chat-actions { display: flex; gap: 3px; }.chat-actions :deep(.el-button) { width: 28px; height: 28px; color: var(--text-muted); }
+.chat-history { min-height: 0; flex: 1; overflow-y: auto; padding: 18px; }
+.empty-state { display: flex; height: 100%; min-height: 350px; align-items: center; justify-content: center; flex-direction: column; text-align: center; }
+.empty-visual { position: relative; display: grid; width: 66px; height: 66px; margin-bottom: 16px; place-items: center; border: 1px solid rgba(72, 160, 224, .12); border-radius: 50%; }
+.visual-core { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgba(78, 189, 255, .38); border-radius: 8px; color: #83dcff; background: rgba(29, 111, 177, .15); box-shadow: 0 0 22px rgba(61, 174, 255, .12); }
+.empty-visual > i { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #42d6b1; box-shadow: 0 0 8px currentColor; }
+.orbit-one { top: 8px; right: 7px; }.orbit-two { bottom: 4px; left: 13px; }
+.empty-title { color: var(--text-primary); font-size: 15px; font-weight: 600; }.empty-desc { max-width: 390px; margin-top: 5px; color: var(--text-muted); font-size: 10px; line-height: 1.6; }
+.empty-examples { display: flex; width: 100%; max-width: 450px; flex-direction: column; gap: 6px; margin-top: 19px; }
+.empty-examples button { display: grid; grid-template-columns: 24px 1fr 16px; min-height: 39px; align-items: center; gap: 8px; padding: 7px 10px; border: 1px solid var(--border-color); border-radius: 5px; color: var(--text-muted); background: rgba(12, 33, 54, .6); font: inherit; text-align: left; cursor: pointer; transition: border-color .15s ease, background .15s ease; }
+.empty-examples button:hover { border-color: rgba(72, 163, 231, .45); background: rgba(24, 71, 111, .38); }
+.empty-examples button span { color: #4daee7; font-size: 8px; }.empty-examples button strong { color: var(--text-secondary); font-size: 9px; font-weight: 500; }
+.message-list { display: flex; flex-direction: column; gap: 18px; }
+.message-item { display: flex; gap: 9px; }.message-item.is-user { flex-direction: row-reverse; }.message-avatar { display: grid; width: 28px; height: 28px; flex: 0 0 28px; place-items: center; border: 1px solid var(--border-color); border-radius: 5px; color: #75c9ef; background: rgba(22, 74, 114, .3); font-size: 12px; }
+.message-content { max-width: 82%; }.message-item.is-user .message-content { text-align: right; }.message-label { margin-bottom: 4px; color: var(--text-muted); font-size: 8px; }.message-bubble { padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 5px; background: rgba(17, 43, 68, .72); word-break: break-word; }.message-item.is-user .message-bubble { border-color: rgba(41, 126, 217, .35); background: rgba(31, 102, 181, .38); }.user-text { color: #e8f6ff; font-size: 10px; }.message-time { margin-top: 3px; color: var(--text-muted); font-size: 8px; }
+.loading-state { display: flex; width: fit-content; align-items: center; gap: 8px; padding: 9px 11px; border: 1px solid var(--border-color); border-radius: 5px; background: var(--bg-tertiary); }.loading-mark { color: #6ecfff; }.loading-state > div { display: flex; gap: 7px; }.loading-state strong { color: var(--text-secondary); font-size: 9px; }.loading-dots { display: flex; align-items: center; gap: 3px; }.loading-dots i { width: 4px; height: 4px; border-radius: 50%; background: #57c8ff; animation: bounce 1.1s infinite; }.loading-dots i:nth-child(2) { animation-delay: .15s; }.loading-dots i:nth-child(3) { animation-delay: .3s; } @keyframes bounce { 50% { transform: translateY(-3px); opacity: .5; } }
+.error-state { display: flex; align-items: center; gap: 8px; padding: 9px 11px; border: 1px solid rgba(255, 109, 89, .26); border-radius: 5px; color: #ff9d8d; background: rgba(157, 55, 44, .1); font-size: 9px; }
+.chat-input-area { padding: 11px 13px; border-top: 1px solid var(--border-color); background: rgba(9, 27, 46, .8); }
+.chat-input :deep(.el-textarea__inner) { min-height: 54px !important; padding: 9px 10px 3px; border: 1px solid var(--border-color); border-bottom: 0; border-radius: 5px 5px 0 0; background: var(--bg-input); box-shadow: none; font-size: 10px; resize: none; }
+.input-footer { display: flex; min-height: 35px; align-items: center; justify-content: space-between; padding: 3px 4px 3px 10px; border: 1px solid var(--border-color); border-top: 0; border-radius: 0 0 5px 5px; background: var(--bg-input); }.input-footer > span { color: var(--text-muted); font-size: 8px; }.send-btn { height: 27px; border-radius: 4px !important; font-size: 9px; }
+.markdown-content { color: var(--text-secondary); font-size: 10px; line-height: 1.65; text-align: left; }
 </style>
