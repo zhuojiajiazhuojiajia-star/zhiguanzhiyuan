@@ -79,11 +79,29 @@
               <span class="notice-dot" />
             </el-button>
           </el-tooltip>
-          <div class="user-chip">
-            <span class="avatar">{{ userInfo.avatar }}</span>
-            <div><strong>{{ userInfo.name }}</strong><span>{{ userInfo.dept }}</span></div>
-            <el-icon><ArrowDown /></el-icon>
-          </div>
+          <el-dropdown trigger="click" @command="handleUserCommand">
+            <div class="user-chip">
+              <span class="avatar">{{ userInfo.avatar }}</span>
+              <div><strong>{{ userInfo.name }}</strong><span>{{ userInfo.dept }}</span></div>
+              <el-icon><ArrowDown /></el-icon>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item command="profile">
+                  <el-icon><User /></el-icon>
+                  <span>个人中心</span>
+                </el-dropdown-item>
+                <el-dropdown-item command="settings">
+                  <el-icon><Setting /></el-icon>
+                  <span>系统设置</span>
+                </el-dropdown-item>
+                <el-dropdown-item divided command="logout">
+                  <el-icon><SwitchButton /></el-icon>
+                  <span>退出登录</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </header>
 
