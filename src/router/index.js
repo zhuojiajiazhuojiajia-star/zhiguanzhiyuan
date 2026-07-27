@@ -13,7 +13,7 @@ const routes = [
   },
   {
     path: '/dashboard',
-    component: () => import('@/components/layout/DashboardLayout.vue'),
+    component: () => import('@/components/layout/AppLayout.vue'),
     meta: { requiresAuth: true },
     redirect: '/dashboard/overview',
     children: [
@@ -26,8 +26,9 @@ const routes = [
   },
   {
     path: '/teacher',
-    component: () => import('@/components/layout/MainLayout.vue'),
+    component: () => import('@/components/layout/AppLayout.vue'),
     meta: { requiresAuth: true },
+    redirect: '/teacher/preparation',
     children: [
       { path: 'preparation', name: 'TeacherPreparation', component: () => import('@/views/teacher/Preparation.vue') },
       { path: 'grading', name: 'TeacherGrading', component: () => import('@/views/teacher/Grading.vue') },
@@ -36,8 +37,9 @@ const routes = [
   },
   {
     path: '/student',
-    component: () => import('@/components/layout/MainLayout.vue'),
+    component: () => import('@/components/layout/AppLayout.vue'),
     meta: { requiresAuth: true },
+    redirect: '/student/qa',
     children: [
       { path: 'qa', name: 'StudentQA', component: () => import('@/views/student/QA.vue') },
       { path: 'calculation', name: 'StudentCalculation', component: () => import('@/views/student/Calculation.vue') },
@@ -46,8 +48,9 @@ const routes = [
   },
   {
     path: '/research',
-    component: () => import('@/components/layout/MainLayout.vue'),
+    component: () => import('@/components/layout/AppLayout.vue'),
     meta: { requiresAuth: true },
+    redirect: '/research/literature',
     children: [
       { path: 'literature', name: 'ResearchLiterature', component: () => import('@/views/research/Literature.vue') },
       { path: 'data-analysis', name: 'ResearchDataAnalysis', component: () => import('@/views/research/DataAnalysis.vue') },

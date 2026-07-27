@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-layout">
+  <div class="app-layout">
     <aside class="sidebar" :class="{ 'is-open': mobileMenuOpen }">
       <div class="brand-block">
         <div class="brand-mark">
@@ -11,19 +11,19 @@
         </div>
       </div>
 
-      <div class="section-switch" aria-label="切换模块">
+      <div class="role-switch" aria-label="切换工作台">
         <button
-          v-for="section in sections"
-          :key="section.value"
+          v-for="role in roles"
+          :key="role.value"
           type="button"
-          :class="{ active: currentSection === section.value }"
-          @click="handleSectionChange(section.value)"
+          :class="{ active: currentRole === role.value }"
+          @click="handleRoleChange(role.value)"
         >
-          {{ section.shortLabel }}
+          {{ role.shortLabel }}
         </button>
       </div>
 
-      <div class="nav-caption">灌区总览驾驶舱</div>
+      <div class="nav-caption">{{ currentRoleName }}工具</div>
       <el-menu :default-active="activeMenu" class="sidebar-menu" router @select="handleMenuSelect">
         <el-menu-item v-for="item in menuItems" :key="item.path" :index="item.path">
           <el-icon><component :is="item.icon" /></el-icon>
@@ -34,15 +34,15 @@
 
       <div class="sidebar-status">
         <div class="status-heading">
-          <span>灌区状态</span>
-          <span class="online-dot">运行正常</span>
+          <span>{{ statusCard.title }}</span>
+          <span class="online-dot">{{ statusCard.status }}</span>
         </div>
         <div class="status-meta">
-          <span>监测点位</span>
-          <strong>128</strong>
+          <span>{{ statusCard.metaLabel }}</span>
+          <strong>{{ statusCard.metaValue }}</strong>
         </div>
-        <div class="status-track"><span /></div>
-        <p>数据更新：实时同步</p>
+        <div class="status-track"><span :style="{ width: statusCard.progress + '%' }" /></div>
+        <p>{{ statusCard.updateText }}</p>
       </div>
     </aside>
 
@@ -55,7 +55,7 @@
             <el-icon><Fold /></el-icon>
           </el-button>
           <div>
-            <span class="header-eyebrow">灌区总览驾驶舱</span>
+            <span class="header-eyebrow">{{ currentRoleName }}</span>
             <strong>{{ currentPageName }}</strong>
           </div>
         </div>
@@ -63,7 +63,7 @@
         <div class="header-right">
           <div class="service-state">
             <span class="pulse-dot" />
-            <div><span>系统状态</span><strong>运行正常</strong></div>
+            <div><span>{{ headerService.label }}</span><strong>{{ headerService.value }}</strong></div>
           </div>
           <div class="date-time">
             <span>{{ currentDate }}</span>
@@ -80,8 +80,8 @@
             </el-button>
           </el-tooltip>
           <div class="user-chip">
-            <span class="avatar">管</span>
-            <div><strong>管理员</strong><span>系统管理</span></div>
+            <span class="avatar">{{ userInfo.avatar }}</span>
+            <div><strong>{{ userInfo.name }}</strong><span>{{ userInfo.dept }}</span></div>
             <el-icon><ArrowDown /></el-icon>
           </div>
         </div>
@@ -104,11 +104,19 @@ import { useRoute, useRouter } from 'vue-router'
 import {
   ArrowDown,
   Bell,
+  Briefcase,
   ChatLineRound,
+  CirclePlus,
+  Document,
+  EditPen,
   Fold,
+  HelpFilled,
   HomeFilled,
+  Medal,
   PieChart,
   Pouring,
+  Reading,
+  Search,
   TrendCharts,
   VideoPlay
 } from '@element-plus/icons-vue'
@@ -120,37 +128,115 @@ const mobileMenuOpen = ref(false)
 const now = ref(new Date())
 let clockTimer
 
-const sections = [
+const roles = [
   { value: 'dashboard', shortLabel: '驾驶舱', label: '灌区总览驾驶舱' },
   { value: 'teacher', shortLabel: '教师', label: '教师工作台' },
-  { value: 'student', shortLabel: '学生', label: '学生工作台' }
+  { value: 'student', shortLabel: '学生', label: '学生工作台' },
+  { value: 'research', shortLabel: '科研', label: '科研工作台' }
 ]
 
-const currentSection = ref('dashboard')
+const menus = {
+  dashboard: [
+    { path: '/dashboard/overview', label: '首页总览', icon: HomeFilled },
+    { path: '/dashboard/assessment', label: '学科评估', icon: PieChart },
+    { path: '/dashboard/qa', label: '知识问答', icon: ChatLineRound },
+    { path: '/dashboard/simulation', label: '仿真推演', icon: VideoPlay },
+    { path: '/dashboard/analysis', label: '数据分析', icon: TrendCharts }
+  ],
+  teacher: [
+    { path: '/teacher/preparation', label: '智能备课', icon: Reading },
+    { path: '/teacher/grading', label: '作业批改', icon: Document, badge: '3' },
+    { path: '/teacher/case-design', label: '案例设计', icon: Briefcase }
+  ],
+  student: [
+    { path: '/student/qa', label: '专业问答', icon: HelpFilled },
+    { path: '/student/calculation', label: '计算讲解', icon: CirclePlus },
+    { path: '/student/learning-path', label: '学习路径', icon: Medal }
+  ],
+  research: [
+    { path: '/research/literature', label: '文献综述', icon: Search },
+    { path: '/research/data-analysis', label: '数据分析', icon: PieChart },
+    { path: '/research/academic-writing', label: '学术写作', icon: EditPen }
+  ]
+}
 
-const menuItems = [
-  { path: '/dashboard/overview', label: '首页总览', icon: HomeFilled },
-  { path: '/dashboard/assessment', label: '学科评估', icon: PieChart },
-  { path: '/dashboard/qa', label: '知识问答', icon: ChatLineRound },
-  { path: '/dashboard/simulation', label: '仿真推演', icon: VideoPlay },
-  { path: '/dashboard/analysis', label: '数据分析', icon: TrendCharts }
-]
+const statusCards = {
+  dashboard: {
+    title: '灌区状态',
+    status: '运行正常',
+    metaLabel: '监测点位',
+    metaValue: '128',
+    progress: 92,
+    updateText: '数据更新：实时同步'
+  },
+  teacher: {
+    title: '知识库状态',
+    status: '在线',
+    metaLabel: '教学资源已同步',
+    metaValue: '2,486',
+    progress: 84,
+    updateText: '最近更新：今天 09:32'
+  },
+  student: {
+    title: '学习状态',
+    status: '进行中',
+    metaLabel: '已完成课程',
+    metaValue: '18/32',
+    progress: 56,
+    updateText: '上次学习：昨天 16:45'
+  },
+  research: {
+    title: '知识库状态',
+    status: '在线',
+    metaLabel: '专业文献已同步',
+    metaValue: '2,486',
+    progress: 84,
+    updateText: '最近更新：今天 09:32'
+  }
+}
 
+const headerServices = {
+  dashboard: { label: '系统状态', value: '运行正常' },
+  teacher: { label: 'AI 服务', value: '运行正常' },
+  student: { label: '学习服务', value: '运行正常' },
+  research: { label: 'AI 服务', value: '运行正常' }
+}
+
+const userInfos = {
+  dashboard: { avatar: '管', name: '管理员', dept: '系统管理' },
+  teacher: { avatar: '林', name: '林老师', dept: '水利工程系' },
+  student: { avatar: '张', name: '张同学', dept: '水利工程2301' },
+  research: { avatar: '林', name: '林老师', dept: '水利工程系' }
+}
+
+const currentRole = ref('dashboard')
+
+const currentRoleName = computed(() => roles.find((r) => r.value === currentRole.value)?.label || '')
+const menuItems = computed(() => menus[currentRole.value] || [])
 const activeMenu = computed(() => route.path)
-const currentPageName = computed(() => menuItems.find((item) => item.path === route.path)?.label || '首页总览')
+const allMenuItems = computed(() => Object.values(menus).flat())
+const currentPageName = computed(() => allMenuItems.value.find((item) => item.path === route.path)?.label || '工作台')
 const currentDate = computed(() => now.value.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit', weekday: 'short' }))
 const currentTime = computed(() => now.value.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }))
+const statusCard = computed(() => statusCards[currentRole.value] || statusCards.dashboard)
+const headerService = computed(() => headerServices[currentRole.value] || headerServices.dashboard)
+const userInfo = computed(() => userInfos[currentRole.value] || userInfos.dashboard)
 
-const handleSectionChange = (section) => {
-  if (section === currentSection.value) return
-  currentSection.value = section
+const syncRoleWithRoute = () => {
+  if (route.path.startsWith('/dashboard')) currentRole.value = 'dashboard'
+  else if (route.path.startsWith('/teacher')) currentRole.value = 'teacher'
+  else if (route.path.startsWith('/student')) currentRole.value = 'student'
+  else if (route.path.startsWith('/research')) currentRole.value = 'research'
+  else currentRole.value = 'dashboard'
+}
+
+const handleRoleChange = (role) => {
+  if (role === currentRole.value) return
+  currentRole.value = role
   mobileMenuOpen.value = false
-  if (section === 'dashboard') {
-    router.push('/dashboard/overview')
-  } else if (section === 'teacher') {
-    router.push('/teacher/preparation')
-  } else if (section === 'student') {
-    router.push('/student/qa')
+  const firstMenu = menus[role]?.[0]
+  if (firstMenu) {
+    router.push(firstMenu.path)
   }
 }
 
@@ -159,6 +245,7 @@ const handleMenuSelect = () => {
 }
 
 onMounted(() => {
+  syncRoleWithRoute()
   clockTimer = window.setInterval(() => { now.value = new Date() }, 1000)
 })
 
@@ -166,7 +253,7 @@ onBeforeUnmount(() => window.clearInterval(clockTimer))
 </script>
 
 <style scoped>
-.dashboard-layout {
+.app-layout {
   display: flex;
   min-width: 0;
   height: 100%;
@@ -211,9 +298,9 @@ onBeforeUnmount(() => window.clearInterval(clockTimer))
 .brand-copy strong { color: var(--text-primary); font-size: 18px; line-height: 1.3; }
 .brand-copy span { color: var(--text-muted); font-size: 11px; white-space: nowrap; }
 
-.section-switch {
+.role-switch {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   margin: 18px 16px 20px;
   padding: 3px;
   border: 1px solid var(--border-color);
@@ -221,7 +308,7 @@ onBeforeUnmount(() => window.clearInterval(clockTimer))
   background: rgba(5, 16, 31, .7);
 }
 
-.section-switch button {
+.role-switch button {
   height: 30px;
   padding: 0;
   border: 0;
@@ -233,7 +320,7 @@ onBeforeUnmount(() => window.clearInterval(clockTimer))
   cursor: pointer;
 }
 
-.section-switch button.active {
+.role-switch button.active {
   color: #f8fdff;
   background: var(--primary-color);
   box-shadow: 0 4px 14px rgba(29, 116, 255, .28);
@@ -297,7 +384,7 @@ onBeforeUnmount(() => window.clearInterval(clockTimer))
 .status-meta { margin-top: 13px; color: var(--text-muted); font-size: 11px; }
 .status-meta strong { color: var(--text-primary); font-size: 13px; }
 .status-track { height: 3px; margin: 8px 0 9px; overflow: hidden; border-radius: 2px; background: rgba(114, 151, 182, .18); }
-.status-track span { display: block; width: 92%; height: 100%; background: linear-gradient(90deg, #2c78ff, #39d6bd); }
+.status-track span { display: block; height: 100%; background: linear-gradient(90deg, #2c78ff, #39d6bd); }
 .sidebar-status p { color: var(--text-muted); font-size: 10px; }
 
 .workspace { display: flex; min-width: 0; flex: 1; flex-direction: column; }
