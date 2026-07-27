@@ -15,6 +15,7 @@ const routes = [
     path: '/dashboard',
     component: () => import('@/components/layout/DashboardLayout.vue'),
     meta: { requiresAuth: true },
+    redirect: '/dashboard/overview',
     children: [
       { path: 'overview', name: 'DashboardOverview', component: () => import('@/views/dashboard/Overview.vue') },
       { path: 'assessment', name: 'DashboardAssessment', component: () => import('@/views/dashboard/Assessment.vue') },
@@ -66,7 +67,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !token) {
     next('/login')
   } else if (to.path === '/login' && token) {
-    next('/teacher/preparation')
+    next('/dashboard/overview')
   } else {
     next()
   }

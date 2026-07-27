@@ -129,7 +129,7 @@ const handleLogin = async () => {
 
     ElMessage.success('登录成功！')
     setTimeout(() => {
-      window.location.href = '/teacher/preparation'
+      window.location.href = '/dashboard/overview'
     }, 500)
   } catch (error) {
     ElMessage.error('登录失败，请检查用户名和密码')
