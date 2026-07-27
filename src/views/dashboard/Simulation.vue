@@ -206,6 +206,7 @@ const waterChartOption = computed(() => ({
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 16px;
+  min-height: 100%;
 }
 
 .card {
@@ -213,6 +214,9 @@ const waterChartOption = computed(() => ({
   border-radius: 12px;
   border: 1px solid rgba(56, 189, 248, 0.1);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
 }
 
 .card-full {
@@ -225,6 +229,7 @@ const waterChartOption = computed(() => ({
   justify-content: space-between;
   padding: 16px;
   border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+  flex-shrink: 0;
 }
 
 .card-title {
@@ -244,7 +249,8 @@ const waterChartOption = computed(() => ({
 
 .simulation-content {
   display: flex;
-  height: calc(100% - 52px);
+  flex: 1;
+  min-height: 0;
 }
 
 .control-panel {

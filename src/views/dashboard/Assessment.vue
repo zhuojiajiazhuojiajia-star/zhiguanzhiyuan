@@ -297,6 +297,7 @@ const lineChartOption = computed(() => ({
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 16px;
+  min-height: 100%;
 }
 
 .card {
@@ -305,6 +306,9 @@ const lineChartOption = computed(() => ({
   border: 1px solid rgba(56, 189, 248, 0.1);
   overflow: hidden;
   grid-column: span 6;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
 }
 
 .card-full {

@@ -281,13 +281,17 @@ const barChartOption = computed(() => ({
 <style scoped>
 .overview-page {
   height: 100%;
+  min-height: 100%;
   overflow-y: auto;
 }
 
 .grid-container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto auto;
   gap: 16px;
+  height: 100%;
+  min-height: 600px;
 }
 
 .card {
@@ -295,10 +299,15 @@ const barChartOption = computed(() => ({
   border-radius: 12px;
   border: 1px solid rgba(56, 189, 248, 0.1);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .card-large {
   grid-column: span 8;
+  grid-row: span 1;
+  min-height: 320px;
 }
 
 .card-grid {
@@ -307,10 +316,12 @@ const barChartOption = computed(() => ({
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   padding: 12px;
+  min-height: 320px;
 }
 
 .chart-card {
-  grid-column: span 4;
+  grid-column: span 3;
+  min-height: 280px;
 }
 
 .card-header {
@@ -319,6 +330,7 @@ const barChartOption = computed(() => ({
   justify-content: space-between;
   padding: 16px;
   border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+  flex-shrink: 0;
 }
 
 .card-title {
@@ -338,13 +350,15 @@ const barChartOption = computed(() => ({
 
 .map-content {
   display: flex;
-  height: calc(100% - 52px);
+  flex: 1;
+  min-height: 0;
 }
 
 .map-legend {
   width: 180px;
   padding: 16px;
   border-right: 1px solid rgba(56, 189, 248, 0.1);
+  flex-shrink: 0;
 }
 
 .legend-title {
@@ -379,6 +393,7 @@ const barChartOption = computed(() => ({
   background: linear-gradient(135deg, #1e3a5f 0%, #0f2744 100%);
   padding: 20px;
   overflow: hidden;
+  min-width: 0;
 }
 
 .map-area::before {
@@ -485,8 +500,9 @@ const barChartOption = computed(() => ({
 }
 
 .chart-container {
-  height: calc(100% - 52px);
+  flex: 1;
   padding: 10px;
+  min-height: 0;
 }
 
 .echarts {

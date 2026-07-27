@@ -254,6 +254,7 @@ const trendChartOption = computed(() => ({
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 16px;
+  min-height: 100%;
 }
 
 .card {
@@ -262,6 +263,9 @@ const trendChartOption = computed(() => ({
   border: 1px solid rgba(56, 189, 248, 0.1);
   overflow: hidden;
   grid-column: span 6;
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
 }
 
 .card-full {
@@ -274,6 +278,7 @@ const trendChartOption = computed(() => ({
   justify-content: space-between;
   padding: 16px;
   border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+  flex-shrink: 0;
 }
 
 .card-title {
@@ -288,7 +293,8 @@ const trendChartOption = computed(() => ({
 
 .qa-content {
   display: flex;
-  height: calc(100% - 52px);
+  flex: 1;
+  min-height: 0;
 }
 
 .qa-sidebar {
