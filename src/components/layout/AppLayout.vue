@@ -117,7 +117,10 @@ import {
   Pouring,
   Reading,
   Search,
+  Setting,
+  SwitchButton,
   TrendCharts,
+  User,
   VideoPlay
 } from '@element-plus/icons-vue'
 
@@ -242,6 +245,14 @@ const handleRoleChange = (role) => {
 
 const handleMenuSelect = () => {
   mobileMenuOpen.value = false
+}
+
+const handleUserCommand = (command) => {
+  if (command === 'logout') {
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    router.push('/login')
+  }
 }
 
 onMounted(() => {
