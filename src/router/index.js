@@ -8,8 +8,20 @@ const routes = [
   },
   {
     path: '/',
-    redirect: '/teacher/preparation',
+    redirect: '/dashboard/overview',
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/dashboard',
+    component: () => import('@/components/layout/DashboardLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [
+      { path: 'overview', name: 'DashboardOverview', component: () => import('@/views/dashboard/Overview.vue') },
+      { path: 'assessment', name: 'DashboardAssessment', component: () => import('@/views/dashboard/Assessment.vue') },
+      { path: 'qa', name: 'DashboardQA', component: () => import('@/views/dashboard/QA.vue') },
+      { path: 'simulation', name: 'DashboardSimulation', component: () => import('@/views/dashboard/Simulation.vue') },
+      { path: 'analysis', name: 'DashboardAnalysis', component: () => import('@/views/dashboard/Analysis.vue') }
+    ]
   },
   {
     path: '/teacher',
