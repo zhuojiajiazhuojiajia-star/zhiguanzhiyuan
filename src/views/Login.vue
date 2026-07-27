@@ -118,8 +118,8 @@ const handleLogin = async () => {
   try {
     await new Promise(resolve => setTimeout(resolve, 1500))
 
-    sessionStorage.setItem('token', 'mock-token-' + Date.now())
-    sessionStorage.setItem('username', form.username)
+    localStorage.setItem('token', 'mock-token-' + Date.now())
+    localStorage.setItem('username', form.username)
 
     if (form.remember) {
       localStorage.setItem('rememberUser', form.username)
