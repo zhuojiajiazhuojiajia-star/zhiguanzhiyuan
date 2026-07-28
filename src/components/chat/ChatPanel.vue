@@ -18,7 +18,7 @@
     <div ref="chatHistoryRef" class="chat-history">
       <div v-if="messages.length === 0" class="empty-state">
         <div class="empty-visual">
-          <span class="visual-core"><el-icon><MagicStick /></el-icon></span>
+          <span class="visual-core"><el-icon><component :is="emptyIcon || MagicStick" /></el-icon></span>
           <i class="orbit-one" /><i class="orbit-two" />
         </div>
         <p class="empty-title">{{ emptyTitle }}</p>
@@ -90,7 +90,7 @@ import { chatApi } from '@/utils/api'
 const props = defineProps({
   title: { type: String, default: 'AI 助手' },
   headerIcon: { type: Object, default: null },
-  emptyIcon: { type: String, default: '' },
+  emptyIcon: { type: [String, Object], default: '' },
   emptyTitle: { type: String, default: '开始协作' },
   emptyDesc: { type: String, default: '输入需求，我会基于当前任务提供专业建议。' },
   examples: { type: Array, default: () => [] },

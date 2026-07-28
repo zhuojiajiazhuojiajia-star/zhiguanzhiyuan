@@ -105,7 +105,7 @@
         <ChatPanel
           title="批改助手"
           :headerIcon="Document"
-          emptyIcon="✏️"
+          :emptyIcon="Edit"
           emptyTitle="作业批改助手"
           emptyDesc="上传作业文件，AI将自动批改并生成详细评语"
           :examples="examples"
@@ -118,7 +118,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Upload, Document, Delete, CircleCheck } from '@element-plus/icons-vue'
+import { Upload, Document, Delete, CircleCheck, Edit } from '@element-plus/icons-vue'
 import ChatPanel from '@/components/chat/ChatPanel.vue'
 
 const uploadedFiles = ref([])
@@ -141,6 +141,10 @@ const examples = [
   '生成一份关于计算题的详细评语模板'
 ]
 
+const iconCheck = '<svg class="inline-icon icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+const iconClose = '<svg class="inline-icon icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+const iconWarning = '<svg class="inline-icon icon-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
+
 const mockResponse = (question) => {
   return `# 作业批改结果
 
@@ -155,39 +159,39 @@ const mockResponse = (question) => {
 ### 选择题（30分）
 | 题号 | 答案 | 得分 | 正确答案 |
 |------|------|------|----------|
-| 1 | A | 2 | A ✅ |
-| 2 | B | 2 | C ❌ |
-| 3 | C | 2 | C ✅ |
-| 4 | D | 2 | D ✅ |
-| 5 | A | 2 | B ❌ |
+| 1 | A | 2 | A ${iconCheck} |
+| 2 | B | 2 | C ${iconClose} |
+| 3 | C | 2 | C ${iconCheck} |
+| 4 | D | 2 | D ${iconCheck} |
+| 5 | A | 2 | B ${iconClose} |
 
 ### 填空题（20分）
 | 题号 | 答案 | 得分 |
 |------|------|------|
-| 1 | 渗透系数 | 4 ✅ |
-| 2 | 明渠均匀流 | 4 ✅ |
-| 3 | 灌溉效率 | 3 ⚠️ |
+| 1 | 渗透系数 | 4 ${iconCheck} |
+| 2 | 明渠均匀流 | 4 ${iconCheck} |
+| 3 | 灌溉效率 | 3 ${iconWarning} |
 
 ### 计算题（30分）
 
 **第1题：渠道流量计算**
-- 思路正确：✅
-- 公式应用：✅
-- 计算过程：✅
-- 结果正确：✅
+- 思路正确：${iconCheck}
+- 公式应用：${iconCheck}
+- 计算过程：${iconCheck}
+- 结果正确：${iconCheck}
 - 得分：15/15
 
 **第2题：水泵选型计算**
-- 思路正确：✅
-- 公式应用：✅
-- 计算过程：⚠️ 部分步骤有误
-- 结果正确：❌
+- 思路正确：${iconCheck}
+- 公式应用：${iconCheck}
+- 计算过程：${iconWarning} 部分步骤有误
+- 结果正确：${iconClose}
 - 得分：10/15
 
 ### 简答题（20分）
-- 回答完整：✅
-- 逻辑清晰：✅
-- 结合实际：✅
+- 回答完整：${iconCheck}
+- 逻辑清晰：${iconCheck}
+- 结合实际：${iconCheck}
 - 得分：18/20
 
 ## 三、综合评分

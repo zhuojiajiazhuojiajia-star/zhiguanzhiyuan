@@ -60,9 +60,21 @@
             </div>
             <div class="map-area">
               <div class="water-body"></div>
-              <div class="dam">🏛️</div>
+              <div class="dam">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 48px; height: 48px;">
+                  <path d="M3 21h18"/>
+                  <path d="M5 21V10l7-5 7 5v11"/>
+                  <path d="M9 21v-8h6v8"/>
+                  <path d="M12 3v2"/>
+                </svg>
+              </div>
               <div class="monitor-point" v-for="i in 3" :key="i">
-                <span class="monitor-icon">📍</span>
+                <span class="monitor-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </span>
                 <span class="monitor-label">监测点{{ i }}</span>
               </div>
             </div>
@@ -84,21 +96,39 @@
               </div>
               <div class="warning-list">
                 <div class="warning-item danger">
-                  <span class="warning-icon">⚠️</span>
+                  <span class="warning-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                      <line x1="12" y1="9" x2="12" y2="13"/>
+                      <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                  </span>
                   <div class="warning-content">
                     <div class="warning-title">下游高风险区</div>
                     <div class="warning-desc">2处风险点，影响人口约1.28万人</div>
                   </div>
                 </div>
                 <div class="warning-item warning">
-                  <span class="warning-icon">⚠️</span>
+                  <span class="warning-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                      <line x1="12" y1="9" x2="12" y2="13"/>
+                      <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                  </span>
                   <div class="warning-content">
                     <div class="warning-title">影响人口（估算）</div>
                     <div class="warning-desc">3.56万人</div>
                   </div>
                 </div>
                 <div class="warning-item info">
-                  <span class="warning-icon">📊</span>
+                  <span class="warning-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+                      <line x1="18" y1="20" x2="18" y2="10"/>
+                      <line x1="12" y1="20" x2="12" y2="4"/>
+                      <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                  </span>
                   <div class="warning-content">
                     <div class="warning-title">影响农田（估算）</div>
                     <div class="warning-desc">3.6万亩</div>

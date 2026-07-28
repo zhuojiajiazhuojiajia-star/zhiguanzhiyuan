@@ -70,7 +70,17 @@
             <strong>{{ currentTime }}</strong>
           </div>
           <div class="weather-chip">
-            <span class="weather-icon">🌤️</span>
+            <span class="weather-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v2" />
+                <path d="m4.93 4.93 1.41 1.41" />
+                <path d="M20 12h2" />
+                <path d="m19.07 4.93-1.41 1.41" />
+                <path d="M15.947 12.65a4 4 0 0 0-5.925-4.128" />
+                <path d="M3 20a5 5 0 1 1 8.9-4H13a3 3 0 0 1 2 5.24" />
+                <path d="M11 20h9" />
+              </svg>
+            </span>
             <div><span>26°C</span><strong>多云</strong></div>
           </div>
           <el-tooltip content="通知中心" placement="bottom">
@@ -441,7 +451,8 @@ onBeforeUnmount(() => window.clearInterval(clockTimer))
 .date-time { padding-left: 22px; border-left: 1px solid var(--border-color); }
 .date-time strong { color: var(--text-primary); font-size: 14px; line-height: 1.2; }
 .weather-chip { display: flex; align-items: center; gap: 9px; padding-left: 22px; border-left: 1px solid var(--border-color); }
-.weather-icon { font-size: 20px; }
+.weather-icon { display: inline-flex; width: 20px; height: 20px; color: var(--text-primary); }
+.weather-icon svg { width: 100%; height: 100%; }
 .weather-chip strong { color: var(--text-primary); font-size: 12px; line-height: 1.2; }
 .icon-button { position: relative; width: 36px; height: 36px; border: 1px solid var(--border-color) !important; color: var(--text-secondary) !important; background: var(--bg-tertiary) !important; }
 .notice-dot { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border: 1px solid var(--bg-tertiary); border-radius: 50%; background: #ff805d; }

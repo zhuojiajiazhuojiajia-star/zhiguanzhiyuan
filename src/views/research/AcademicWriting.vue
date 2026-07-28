@@ -99,7 +99,7 @@
         <ChatPanel
           title="学术写作助手"
           :headerIcon="EditPen"
-          emptyIcon="✍️"
+          :emptyIcon="EditPen"
           emptyTitle="学术写作助手"
           emptyDesc="输入论文信息，AI将为您撰写学术论文或生成图表说明"
           :examples="examples"

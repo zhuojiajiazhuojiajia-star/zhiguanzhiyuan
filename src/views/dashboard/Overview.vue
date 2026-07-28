@@ -35,42 +35,75 @@
 
       <div class="card card-grid">
         <div class="stat-card">
-          <div class="stat-icon water"><span>💧</span></div>
+          <div class="stat-icon water">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+            </svg>
+          </div>
           <div class="stat-info">
             <div class="stat-value">86.3%</div>
             <div class="stat-label">供水满足率</div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon flow"><span>🌊</span></div>
+          <div class="stat-icon flow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+              <path d="M2 12c2 -2 4 -2 6 0s4 2 6 0 4 -2 6 0"/>
+              <path d="M2 18c2 -2 4 -2 6 0s4 2 6 0 4 -2 6 0"/>
+              <path d="M2 6c2 -2 4 -2 6 0s4 2 6 0 4 -2 6 0"/>
+            </svg>
+          </div>
           <div class="stat-info">
             <div class="stat-value">152.6</div>
             <div class="stat-label">实时流量(m³/s)</div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon area"><span>📊</span></div>
+          <div class="stat-icon area">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
           <div class="stat-info">
             <div class="stat-value">523.6</div>
             <div class="stat-label">灌区面积(万亩)</div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon gate"><span>🚪</span></div>
+          <div class="stat-icon gate">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+              <path d="M3 21h18"/>
+              <path d="M5 21V7l7-4 7 4v14"/>
+              <path d="M9 21v-6h6v6"/>
+            </svg>
+          </div>
           <div class="stat-info">
             <div class="stat-value">128</div>
             <div class="stat-label">闸门数量(座)</div>
           </div>
         </div>
         <div class="stat-card warning">
-          <div class="stat-icon alert"><span>⚠️</span></div>
+          <div class="stat-icon alert">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
           <div class="stat-info">
             <div class="stat-value">5</div>
             <div class="stat-label">今日预警(条)</div>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon level"><span>📈</span></div>
+          <div class="stat-icon level">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+              <polyline points="16 7 22 7 22 13"/>
+            </svg>
+          </div>
           <div class="stat-info">
             <div class="stat-value">23.45</div>
             <div class="stat-label">水位(总干渠m)</div>

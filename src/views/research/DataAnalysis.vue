@@ -75,7 +75,7 @@
               :class="{ active: selectedMethod === method.id }"
               @click="selectMethod(method)"
             >
-              <div class="method-icon">{{ method.icon }}</div>
+              <div class="method-icon"><el-icon :size="24"><component :is="method.icon" /></el-icon></div>
               <div class="method-info">
                 <span class="method-name">{{ method.name }}</span>
                 <span class="method-desc">{{ method.desc }}</span>
@@ -120,7 +120,7 @@
         <ChatPanel
           title="数据分析助手"
           :headerIcon="PieChart"
-          emptyIcon="📊"
+          :emptyIcon="DataBoard"
           emptyTitle="灌区数据分析"
           emptyDesc="上传数据或选择数据集，AI将为您进行多维度分析"
           :examples="examples"
@@ -133,7 +133,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Upload, Document, Delete, DataBoard, ArrowRight, PieChart } from '@element-plus/icons-vue'
+import { Upload, Document, Delete, DataBoard, ArrowRight, PieChart, TrendCharts, Link, Folder, MagicStick, DataAnalysis, Warning } from '@element-plus/icons-vue'
 import ChatPanel from '@/components/chat/ChatPanel.vue'
 
 const activeDataTab = ref('upload')
@@ -154,12 +154,12 @@ const datasets = ref([
 ])
 
 const analysisMethods = ref([
-  { id: 1, name: '趋势分析', desc: '分析数据变化趋势', icon: '📈' },
-  { id: 2, name: '相关性分析', desc: '分析变量间相关性', icon: '🔗' },
-  { id: 3, name: '聚类分析', desc: '数据分类与聚类', icon: '🗂️' },
-  { id: 4, name: '预测模型', desc: '基于历史数据预测', icon: '🔮' },
-  { id: 5, name: '对比分析', desc: '多组数据对比', icon: '⚖️' },
-  { id: 6, name: '异常检测', desc: '检测异常数据点', icon: '⚠️' }
+  { id: 1, name: '趋势分析', desc: '分析数据变化趋势', icon: TrendCharts },
+  { id: 2, name: '相关性分析', desc: '分析变量间相关性', icon: Link },
+  { id: 3, name: '聚类分析', desc: '数据分类与聚类', icon: Folder },
+  { id: 4, name: '预测模型', desc: '基于历史数据预测', icon: MagicStick },
+  { id: 5, name: '对比分析', desc: '多组数据对比', icon: DataAnalysis },
+  { id: 6, name: '异常检测', desc: '检测异常数据点', icon: Warning }
 ])
 
 const examples = [

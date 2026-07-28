@@ -109,7 +109,7 @@
         <ChatPanel
           title="文献综述助手"
           :headerIcon="Search"
-          emptyIcon="📚"
+          :emptyIcon="Reading"
           emptyTitle="文献综述助手"
           emptyDesc="输入研究主题，AI将为您检索相关文献并生成综述"
           :examples="examples"
@@ -122,7 +122,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Search, ArrowRight } from '@element-plus/icons-vue'
+import { Search, ArrowRight, Reading } from '@element-plus/icons-vue'
 import ChatPanel from '@/components/chat/ChatPanel.vue'
 
 const searchForm = ref({

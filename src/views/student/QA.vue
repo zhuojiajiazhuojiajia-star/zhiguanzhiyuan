@@ -68,7 +68,7 @@
         <ChatPanel
           title="专业问答导师"
           :headerIcon="HelpFilled"
-          emptyIcon="🎓"
+          :emptyIcon="GraduationIcon"
           emptyTitle="农业水利专业问答"
           emptyDesc="提出您的专业问题，AI导师将为您提供详细解答"
           :examples="examples"
@@ -80,9 +80,26 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, h } from 'vue'
 import { HelpFilled, Watermelon, WindPower, Place, TrendCharts, Sunny, Cloudy } from '@element-plus/icons-vue'
 import ChatPanel from '@/components/chat/ChatPanel.vue'
+
+const GraduationIcon = {
+  render() {
+    return h('svg', {
+      xmlns: 'http://www.w3.org/2000/svg',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      'stroke-width': '2',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round'
+    }, [
+      h('path', { d: 'M22 10v6M2 10l10-5 10 5-10 5z' }),
+      h('path', { d: 'M6 12v5c3 3 9 3 12 0v-5' })
+    ])
+  }
+}
 
 const selectedCategory = ref('irrigation')
 

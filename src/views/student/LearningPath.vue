@@ -15,7 +15,12 @@
             <span class="card-title">学习档案</span>
           </template>
           <div class="profile-info">
-            <div class="profile-avatar">👨‍🎓</div>
+            <div class="profile-avatar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+              </svg>
+            </div>
             <div class="profile-details">
               <span class="profile-name">学生用户</span>
               <span class="profile-major">农业水利工程专业</span>
@@ -107,7 +112,7 @@
         <ChatPanel
           title="学习路径助手"
           :headerIcon="Medal"
-          emptyIcon="🎯"
+          :emptyIcon="TargetIcon"
           emptyTitle="个性化学习路径"
           emptyDesc="设置您的学习目标，AI将为您定制专属学习路径"
           :examples="examples"
@@ -119,9 +124,27 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, h } from 'vue'
 import { Medal } from '@element-plus/icons-vue'
 import ChatPanel from '@/components/chat/ChatPanel.vue'
+
+const TargetIcon = {
+  render() {
+    return h('svg', {
+      xmlns: 'http://www.w3.org/2000/svg',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      'stroke-width': '2',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round'
+    }, [
+      h('circle', { cx: '12', cy: '12', r: '10' }),
+      h('circle', { cx: '12', cy: '12', r: '6' }),
+      h('circle', { cx: '12', cy: '12', r: '2' })
+    ])
+  }
+}
 
 const goal = ref({
   direction: '',

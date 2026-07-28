@@ -1,0 +1,9 @@
+<template>
+  <g>
+    <path d="M18 6 6 18" />
+    <path d="m6 6 12 12" />
+  </g>
+</template>
+
+<script setup>
+</script>

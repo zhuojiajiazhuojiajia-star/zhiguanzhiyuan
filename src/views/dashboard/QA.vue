@@ -35,19 +35,40 @@
             <div class="chat-container">
               <div class="chat-messages">
                 <div class="chat-message system-message">
-                  <div class="message-avatar">🤖</div>
+                  <div class="message-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+                      <rect x="3" y="8" width="18" height="12" rx="2"/>
+                      <path d="M12 2v4"/>
+                      <circle cx="12" cy="14" r="1"/>
+                      <path d="M8 14v0"/>
+                      <path d="M16 14v0"/>
+                    </svg>
+                  </div>
                   <div class="message-content">
                     <div class="message-text">您好！我是农业水利领域的智能问答助手。请问有什么可以帮助您的？</div>
                   </div>
                 </div>
                 <div class="chat-message user-message" v-for="(msg, index) in messages" :key="index">
-                  <div class="message-avatar">👤</div>
+                  <div class="message-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                  </div>
                   <div class="message-content">
                     <div class="message-text">{{ msg.content }}</div>
                   </div>
                 </div>
                 <div class="chat-message system-message" v-if="loading">
-                  <div class="message-avatar">🤖</div>
+                  <div class="message-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+                      <rect x="3" y="8" width="18" height="12" rx="2"/>
+                      <path d="M12 2v4"/>
+                      <circle cx="12" cy="14" r="1"/>
+                      <path d="M8 14v0"/>
+                      <path d="M16 14v0"/>
+                    </svg>
+                  </div>
                   <div class="message-content">
                     <div class="message-text">
                       <span class="typing-dot"></span>
@@ -57,7 +78,15 @@
                   </div>
                 </div>
                 <div class="chat-message system-message" v-for="(reply, index) in replies" :key="'reply-' + index">
-                  <div class="message-avatar">🤖</div>
+                  <div class="message-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+                      <rect x="3" y="8" width="18" height="12" rx="2"/>
+                      <path d="M12 2v4"/>
+                      <circle cx="12" cy="14" r="1"/>
+                      <path d="M8 14v0"/>
+                      <path d="M16 14v0"/>
+                    </svg>
+                  </div>
                   <div class="message-content">
                     <div class="message-text" v-html="reply"></div>
                   </div>

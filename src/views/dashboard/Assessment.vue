@@ -44,7 +44,13 @@
         </div>
         <div class="faculty-list">
           <div class="faculty-item">
-            <div class="faculty-avatar">👨‍🏫</div>
+            <div class="faculty-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px;">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+                <path d="M12 11v0"/>
+              </svg>
+            </div>
             <div class="faculty-info">
               <div class="faculty-name">张教授</div>
               <div class="faculty-title">博士生导师</div>
@@ -52,7 +58,12 @@
             <div class="faculty-score">98</div>
           </div>
           <div class="faculty-item">
-            <div class="faculty-avatar">👩‍🏫</div>
+            <div class="faculty-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px;">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
             <div class="faculty-info">
               <div class="faculty-name">李教授</div>
               <div class="faculty-title">硕士生导师</div>
@@ -60,7 +71,14 @@
             <div class="faculty-score">95</div>
           </div>
           <div class="faculty-item">
-            <div class="faculty-avatar">👨‍🔬</div>
+            <div class="faculty-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px;">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+                <path d="M19 14v2"/>
+                <path d="M5 14v2"/>
+              </svg>
+            </div>
             <div class="faculty-info">
               <div class="faculty-name">王研究员</div>
               <div class="faculty-title">科研骨干</div>
@@ -94,17 +112,36 @@
         </div>
         <div class="student-stats">
           <div class="student-item">
-            <div class="student-icon">🎓</div>
+            <div class="student-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px;">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+              </svg>
+            </div>
             <div class="student-value">128</div>
             <div class="student-label">博士毕业生</div>
           </div>
           <div class="student-item">
-            <div class="student-icon">📚</div>
+            <div class="student-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px;">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+            </div>
             <div class="student-value">567</div>
             <div class="student-label">硕士毕业生</div>
           </div>
           <div class="student-item">
-            <div class="student-icon">🏆</div>
+            <div class="student-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px;">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                <path d="M4 22h16"/>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+              </svg>
+            </div>
             <div class="student-value">89</div>
             <div class="student-label">优秀论文</div>
           </div>

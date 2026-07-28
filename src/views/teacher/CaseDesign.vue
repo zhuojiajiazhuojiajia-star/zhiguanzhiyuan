@@ -25,7 +25,11 @@
                     :class="{ active: selectedCase === caseItem.id }"
                     @click="selectCase(caseItem)"
                   >
-                    <div class="case-icon">💧</div>
+                    <div class="case-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px;">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                      </svg>
+                    </div>
                     <div class="case-info">
                       <span class="case-title">{{ caseItem.title }}</span>
                       <span class="case-desc">{{ caseItem.desc }}</span>
@@ -42,7 +46,12 @@
                     :class="{ active: selectedCase === caseItem.id }"
                     @click="selectCase(caseItem)"
                   >
-                    <div class="case-icon">🌊</div>
+                    <div class="case-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px;">
+                        <path d="M2 12c2.21 0 4-1.79 4-4s1.79-4 4-4 4 1.79 4 4 1.79 4 4 4 4-1.79 4-4"/>
+                        <path d="M2 18c2.21 0 4-1.79 4-4s1.79-4 4-4 4 1.79 4 4 1.79 4 4 4 4-1.79 4-4"/>
+                      </svg>
+                    </div>
                     <div class="case-info">
                       <span class="case-title">{{ caseItem.title }}</span>
                       <span class="case-desc">{{ caseItem.desc }}</span>
@@ -59,7 +68,12 @@
                     :class="{ active: selectedCase === caseItem.id }"
                     @click="selectCase(caseItem)"
                   >
-                    <div class="case-icon">🏞️</div>
+                    <div class="case-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px;">
+                        <path d="M8 19h8a4 4 0 0 0 2.83-1.17l2.83-2.83a4 4 0 0 0 0-5.66l-7.07-7.07a4 4 0 0 0-5.66 0L4.34 9.34a4 4 0 0 0 0 5.66L6.17 16.83"/>
+                        <circle cx="12" cy="12" r="2"/>
+                      </svg>
+                    </div>
                     <div class="case-info">
                       <span class="case-title">{{ caseItem.title }}</span>
                       <span class="case-desc">{{ caseItem.desc }}</span>
@@ -110,7 +124,7 @@
         <ChatPanel
           title="案例教学助手"
           :headerIcon="Briefcase"
-          emptyIcon="📋"
+          :emptyIcon="Document"
           emptyTitle="案例教学设计"
           emptyDesc="选择一个案例，AI将为您设计完整的教学方案"
           :examples="examples"
@@ -123,7 +137,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { InfoFilled, Briefcase } from '@element-plus/icons-vue'
+import { InfoFilled, Briefcase, Document } from '@element-plus/icons-vue'
 import ChatPanel from '@/components/chat/ChatPanel.vue'
 
 const activeTab = ref('irrigation')
@@ -378,7 +392,15 @@ const handleDesign = () => {
 }
 
 .case-icon {
-  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.case-item.active .case-icon {
+  color: #fff;
 }
 
 .case-info {

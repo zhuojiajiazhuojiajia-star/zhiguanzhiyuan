@@ -68,7 +68,12 @@
               class="example-item"
               @click="handleExampleClick(example)"
             >
-              <span class="example-icon">📝</span>
+              <span class="example-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20h9"/>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+              </span>
               <span class="example-title">{{ example.title }}</span>
             </div>
           </div>
@@ -79,7 +84,7 @@
         <ChatPanel
           title="计算题讲解"
           :headerIcon="CirclePlus"
-          emptyIcon="🔢"
+          :emptyIcon="CalculatorIcon"
           emptyTitle="计算题分步讲解"
           emptyDesc="输入题目和已知条件，AI将为您逐步讲解解题过程"
           :examples="examples"
@@ -91,9 +96,33 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, h } from 'vue'
 import { CirclePlus } from '@element-plus/icons-vue'
 import ChatPanel from '@/components/chat/ChatPanel.vue'
+
+const CalculatorIcon = {
+  render() {
+    return h('svg', {
+      xmlns: 'http://www.w3.org/2000/svg',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      'stroke-width': '2',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round'
+    }, [
+      h('rect', { x: '4', y: '2', width: '16', height: '20', rx: '2' }),
+      h('line', { x1: '8', y1: '6', x2: '16', y2: '6' }),
+      h('line', { x1: '16', y1: '10', x2: '16', y2: '10' }),
+      h('line', { x1: '16', y1: '14', x2: '16', y2: '14' }),
+      h('line', { x1: '8', y1: '10', x2: '8', y2: '10' }),
+      h('line', { x1: '8', y1: '14', x2: '8', y2: '14' }),
+      h('line', { x1: '12', y1: '10', x2: '12', y2: '10' }),
+      h('line', { x1: '12', y1: '14', x2: '12', y2: '14' }),
+      h('line', { x1: '8', y1: '18', x2: '16', y2: '18' })
+    ])
+  }
+}
 
 const calcForm = ref({
   type: '',
