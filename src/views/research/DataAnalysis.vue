@@ -133,6 +133,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
 import { Upload, Document, Delete, DataBoard, ArrowRight, PieChart, TrendCharts, Link, Folder, MagicStick, DataAnalysis, Warning } from '@element-plus/icons-vue'
 import ChatPanel from '@/components/chat/ChatPanel.vue'
 
